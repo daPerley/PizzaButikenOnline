@@ -5,9 +5,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PizzaButikenOnline.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PizzaButikenOnline.Controllers
 {
+    [Authorize]
     public class DishController : Controller
     {
         private ApplicationDbContext _context;
