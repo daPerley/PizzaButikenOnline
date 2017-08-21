@@ -112,11 +112,56 @@ namespace PizzaButikenOnline.Data
                             x.Name == "Fefferoni")
                             .ToList()
                     },
-                    new Dish { Name = "Kebabrulle", Price = 75 },
-                    new Dish { Name = "Kycklingrulle", Price = 75 },
-                    new Dish { Name = "Ceasarsallad", Price = 85 },
-                    new Dish { Name = "Kebabsallad", Price = 85 },
-                    new Dish { Name = "Skinksallad", Price = 85}
+                    new Dish {
+                        Name = "Kebabrulle",
+                        Price = 75,
+                        Ingredients = ingredients.Where(x =>
+                            x.Name == "Vitlökssås" ||
+                            x.Name == "Tomat" ||
+                            x.Name == "Kebab" ||
+                            x.Name == "Fefferoni")
+                            .ToList()
+                    },
+                    new Dish {
+                        Name = "Kycklingrulle",
+                        Price = 75,
+                        Ingredients = ingredients.Where(x =>
+                            x.Name == "Vitlökssås" ||
+                            x.Name == "Tomat" ||
+                            x.Name == "Kyckling" ||
+                            x.Name == "Gurka")
+                            .ToList()
+                    },
+                    new Dish {
+                        Name = "Ceasarsallad",
+                        Price = 85,
+                        Ingredients = ingredients.Where(x =>
+                            x.Name == "Ceasardressing" ||
+                            x.Name == "Parmesan" ||
+                            x.Name == "Kyckling" ||
+                            x.Name == "Krutonger")
+                            .ToList()
+                    },
+                    new Dish {
+                        Name = "Kebabsallad",
+                        Price = 85,
+                        Ingredients = ingredients.Where(x =>
+                            x.Name == "Vitlökssås" ||
+                            x.Name == "Tomat" ||
+                            x.Name == "Kebab" ||
+                            x.Name == "Fefferoni")
+                            .ToList()
+                    },
+                    new Dish {
+                        Name = "Skinksallad",
+                        Price = 85,
+                        Ingredients = ingredients.Where(x =>
+                            x.Name == "Gurka" ||
+                            x.Name == "Tomat" ||
+                            x.Name == "Skinka" ||
+                            x.Name == "Isbergssallad")
+                            .ToList()
+                    }
                 });
                 context.SaveChanges();
             }
