@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using PizzaButikenOnline.Models;
 
@@ -22,6 +18,13 @@ namespace PizzaButikenOnline.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+
+            builder.Entity<Dish>()
+                .HasMany(x => x.Ingredients);
+
+            builder.Entity<Ingredient>()
+                .HasMany(x => x.Dishes);
+
             base.OnModelCreating(builder);
             // Customize the ASP.NET Identity model and override the defaults if needed.
             // For example, you can rename the ASP.NET Identity table names and more.

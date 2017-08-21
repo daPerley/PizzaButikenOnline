@@ -12,5 +12,7 @@ namespace PizzaButikenOnline.Models
         public int Id { get; set; }
         [Required, MaxLength(25), MinLength(3)]
         public string Name { get; set; }
+
+        public ICollection<Dish> Dishes { get; set; }
     }
 }
