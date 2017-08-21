@@ -50,7 +50,8 @@ namespace PizzaButikenOnline.Data
                     new Ingredient {Name="Isbergssallad"},
                     new Ingredient {Name="Champinjoner"},
                     new Ingredient {Name="Ceasardressing"},
-                    new Ingredient {Name="Fefferoni"}
+                    new Ingredient {Name="Fefferoni"},
+                    new Ingredient {Name="Parmesan"}
                 });
                 context.SaveChanges();
             }
