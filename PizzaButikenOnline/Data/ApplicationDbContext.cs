@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using PizzaButikenOnline.Models;
 
@@ -12,8 +8,7 @@ namespace PizzaButikenOnline.Data
     {
         public DbSet<Dish> Dishes { get; set; }
         public DbSet<Ingredient> Ingredients { get; set; }
-
-        // TODO: Set up Many to Many reltionships for ingredients and dishes
+        public DbSet<Category> Categories { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -22,6 +17,18 @@ namespace PizzaButikenOnline.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+
+            builder.Entity<Dish>()
+                .HasMany(x => x.Ingredients);
+
+            builder.Entity<Ingredient>()
+                .HasMany(x => x.Dishes);
+
+            builder.Entity<Category>()
+                .HasMany(c => c.Dishes)
+                .WithOne(e => e.Category)
+                .IsRequired();
+
             base.OnModelCreating(builder);
             // Customize the ASP.NET Identity model and override the defaults if needed.
             // For example, you can rename the ASP.NET Identity table names and more.
