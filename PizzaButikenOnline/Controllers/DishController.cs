@@ -27,6 +27,8 @@ namespace PizzaButikenOnline.Controllers
         // GET: Dish/Details/5
         public ActionResult Details(int id)
         {
+
+            // TODO: make a repository for dish to replace the _context calls
             return View(_context.Dishes.FirstOrDefault(x => x.Id == id));
         }
 

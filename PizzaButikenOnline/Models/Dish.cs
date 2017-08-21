@@ -14,5 +14,9 @@ namespace PizzaButikenOnline.Models
         public string Name { get; set; }
         [Required, MaxLength(499), MinLength(29)]
         public int Price { get; set; }
+        [Required, MaxLength(150), MinLength(20)]
+        public string Description { get; set; }
+
+        public ICollection<Ingredient> Ingredients { get; set; }
     }
 }

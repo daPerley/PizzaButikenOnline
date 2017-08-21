@@ -11,6 +11,9 @@ namespace PizzaButikenOnline.Data
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public DbSet<Dish> Dishes { get; set; }
+        public DbSet<Ingredient> Ingredients { get; set; }
+
+        // TODO: Set up Many to Many reltionships for ingredients and dishes
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
