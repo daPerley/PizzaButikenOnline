@@ -9,6 +9,11 @@ namespace PizzaButikenOnline.Data
     {
         public static void Initialize(ApplicationDbContext context, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
+            /* ROLES */
+            var adminRole = new IdentityRole { Name = "Admin" };
+            var roleResult = roleManager.CreateAsync(adminRole).Result;
+
+            /* ADDING USERS */
             var aUser = new ApplicationUser()
             {
                 UserName = "test@user.com",
@@ -16,9 +21,6 @@ namespace PizzaButikenOnline.Data
             };
 
             var r = userManager.CreateAsync(aUser, "Abc12#Test");
-
-            var adminRole = new IdentityRole { Name = "Admin" };
-            var roleResult = roleManager.CreateAsync(adminRole).Result;
 
             var adminUser = new ApplicationUser()
             {
@@ -29,6 +31,23 @@ namespace PizzaButikenOnline.Data
             var r2 = userManager.CreateAsync(adminUser, "Abc12#Test");
 
             userManager.AddToRoleAsync(adminUser, adminRole.Name);
+
+            /* CATEGORIES */
+
+            var categories = new List<Category>
+                {
+                    new Category {Name="Pizza"},
+                    new Category {Name="Sallad"},
+                    new Category {Name="Övrigt"}
+                };
+
+            if (!context.Categories.Any())
+            {
+                context.AddRange(categories);
+                context.SaveChanges();
+            }
+
+            /* INGREDIENTS */
 
             var ingredients = new List<Ingredient>
                 {
@@ -58,6 +77,8 @@ namespace PizzaButikenOnline.Data
                 context.SaveChanges();
             }
 
+            /* DISHES */
+
             if (!context.Dishes.Any())
             {
                 context.AddRange(new List<Dish>
@@ -71,7 +92,8 @@ namespace PizzaButikenOnline.Data
                             x.Name == "Ost" || 
                             x.Name == "Skinka" || 
                             x.Name == "Champinjoner")
-                            .ToList()
+                            .ToList(),
+                        Category = categories.FirstOrDefault(x => x.Name == "Pizza")
                     },
                     new Dish {
                         Name = "Margaritha",
@@ -80,7 +102,8 @@ namespace PizzaButikenOnline.Data
                             x.Name == "Tomatsås" ||
                             x.Name == "Ost" ||
                             x.Name == "Skinka")
-                            .ToList()
+                            .ToList(),
+                        Category = categories.FirstOrDefault(x => x.Name == "Pizza")
                     },
                     new Dish {
                         Name = "Hawaii",
@@ -90,7 +113,8 @@ namespace PizzaButikenOnline.Data
                             x.Name == "Ost" ||
                             x.Name == "Skinka" ||
                             x.Name == "Annanas")
-                            .ToList()
+                            .ToList(),
+                        Category = categories.FirstOrDefault(x => x.Name == "Pizza")
                     },
                     new Dish {
                         Name = "Kebabpizza",
@@ -100,7 +124,8 @@ namespace PizzaButikenOnline.Data
                             x.Name == "Ost" ||
                             x.Name == "Kebab" ||
                             x.Name == "Fefferoni")
-                            .ToList()
+                            .ToList(),
+                        Category = categories.FirstOrDefault(x => x.Name == "Pizza")
                     },
                     new Dish {
                         Name = "Kebab i bröd",
@@ -110,7 +135,8 @@ namespace PizzaButikenOnline.Data
                             x.Name == "Tomat" ||
                             x.Name == "Kebab" ||
                             x.Name == "Fefferoni")
-                            .ToList()
+                            .ToList(),
+                        Category = categories.FirstOrDefault(x => x.Name == "Övrigt")
                     },
                     new Dish {
                         Name = "Kebabrulle",
@@ -120,7 +146,8 @@ namespace PizzaButikenOnline.Data
                             x.Name == "Tomat" ||
                             x.Name == "Kebab" ||
                             x.Name == "Fefferoni")
-                            .ToList()
+                            .ToList(),
+                        Category = categories.FirstOrDefault(x => x.Name == "Övrigt")
                     },
                     new Dish {
                         Name = "Kycklingrulle",
@@ -130,7 +157,8 @@ namespace PizzaButikenOnline.Data
                             x.Name == "Tomat" ||
                             x.Name == "Kyckling" ||
                             x.Name == "Gurka")
-                            .ToList()
+                            .ToList(),
+                        Category = categories.FirstOrDefault(x => x.Name == "Övrigt")
                     },
                     new Dish {
                         Name = "Ceasarsallad",
@@ -140,7 +168,8 @@ namespace PizzaButikenOnline.Data
                             x.Name == "Parmesan" ||
                             x.Name == "Kyckling" ||
                             x.Name == "Krutonger")
-                            .ToList()
+                            .ToList(),
+                        Category = categories.FirstOrDefault(x => x.Name == "Sallad")
                     },
                     new Dish {
                         Name = "Kebabsallad",
@@ -150,7 +179,8 @@ namespace PizzaButikenOnline.Data
                             x.Name == "Tomat" ||
                             x.Name == "Kebab" ||
                             x.Name == "Fefferoni")
-                            .ToList()
+                            .ToList(),
+                        Category = categories.FirstOrDefault(x => x.Name == "Sallad")
                     },
                     new Dish {
                         Name = "Skinksallad",
@@ -160,7 +190,8 @@ namespace PizzaButikenOnline.Data
                             x.Name == "Tomat" ||
                             x.Name == "Skinka" ||
                             x.Name == "Isbergssallad")
-                            .ToList()
+                            .ToList(),
+                        Category = categories.FirstOrDefault(x => x.Name == "Sallad")
                     }
                 });
                 context.SaveChanges();
