@@ -21,6 +21,10 @@ namespace PizzaButikenOnline.Controllers
         // GET: Dish
         public ActionResult Index()
         {
+            //TODO: Add some sort of lazy loading to keep the data in the memory here
+
+            //TODO: Figure if you're going to have a menu model storing category/ingrediens/category or if this is enough with a partial view and repositroy/service
+
             return View(_context.Dishes.ToList());
         }
 
