@@ -1,13 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace PizzaButikenOnline.Models
+namespace PizzaButikenOnline.Models.DishViewModels
 {
-    public class Dish
+    public class CreateDishViewModel
     {
-        [Key]
-        public int Id { get; set; }
-
         [Required]
         public string Name { get; set; }
 
@@ -17,11 +14,12 @@ namespace PizzaButikenOnline.Models
         [Required]
         public string Description { get; set; }
 
-        public ICollection<Ingredient> Ingredients { get; set; }
-
-        public Category Category { get; set; }
+        [Required]
+        public IEnumerable<Ingredient> Ingredients { get; set; }
 
         [Required]
         public int CategoryId { get; set; }
+
+        public IEnumerable<Category> Categories { get; set; }
     }
 }

@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PizzaButikenOnline.Data;
-using Microsoft.AspNetCore.Authorization;
+using PizzaButikenOnline.Models;
+using PizzaButikenOnline.Models.DishViewModels;
+using System.Linq;
 
 namespace PizzaButikenOnline.Controllers
 {
@@ -18,7 +17,7 @@ namespace PizzaButikenOnline.Controllers
         {
             _context = context;
         }
-        // GET: Dish
+
         public ActionResult Index()
         {
             //TODO: Add some sort of lazy loading to keep the data in the memory here
@@ -28,7 +27,6 @@ namespace PizzaButikenOnline.Controllers
             return View(_context.Dishes.ToList());
         }
 
-        // GET: Dish/Details/5
         public ActionResult Details(int id)
         {
 
@@ -36,22 +34,42 @@ namespace PizzaButikenOnline.Controllers
             return View(_context.Dishes.FirstOrDefault(x => x.Id == id));
         }
 
-        // GET: Dish/Create
         public ActionResult Create()
         {
-            return View();
+            var viewModel = new CreateDishViewModel
+            {
+                Categories = _context.Categories.ToList(),
+                Ingredients = _context.Ingredients.ToList()
+            };
+            return View(viewModel);
         }
 
-        // POST: Dish/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(CreateDishViewModel viewModel)
         {
             try
             {
-                // TODO: Add insert logic here
+                if (!ModelState.IsValid)
+                {
+                    viewModel.Categories = _context.Categories.ToList();
+                    viewModel.Ingredients = _context.Ingredients.ToList();
+                    return View("Create", viewModel);
+                }
 
-                return RedirectToAction(nameof(Index));
+                var dish = new Dish
+                {
+                    Name = viewModel.Name,
+                    Price = viewModel.Price,
+                    Description = viewModel.Description,
+                    CategoryId = viewModel.CategoryId,
+                    Ingredients = viewModel.Ingredients.ToList()
+                };
+
+                _context.Dishes.Add(dish);
+                _context.SaveChanges();
+
+                return RedirectToAction("Index", "Home");
             }
             catch
             {
@@ -95,7 +113,10 @@ namespace PizzaButikenOnline.Controllers
         {
             try
             {
-                // TODO: Add delete logic here
+                var dish = _context.Dishes.FirstOrDefault(d => d.Id == id);
+
+                _context.Dishes.Remove(dish);
+                _context.SaveChanges();
 
                 return RedirectToAction(nameof(Index));
             }
