@@ -1,7 +1,9 @@
-﻿@model PizzaButikenOnline.Models.Dish
+﻿@model PizzaButikenOnline.Models.DishViewModels.DishViewModel
 
 @{
     ViewData["Title"] = "Edit";
+    var categories = new SelectList(Model.Categories, "Id", "Name");
+    var ingredients = new SelectList(Model.Ingredients, "Id", "Name");
 }
 
 <h2>Edit</h2>
@@ -10,13 +12,15 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
+        <div class="form-control-group">
+            <label asp-for="CategoryId" class="control-label"></label>
+            <select asp-for="CategoryId" class="form-control" asp-items="categories">
+                <option selected="selected"></option>
+            </select>
+            <span asp-validation-for="CategoryId" class="text-danger"></span>
+        </div>
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Id" class="control-label"></label>
-                <input asp-for="Id" class="form-control" />
-                <span asp-validation-for="Id" class="text-danger"></span>
-            </div>
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />
@@ -27,8 +31,20 @@
                 <input asp-for="Price" class="form-control" />
                 <span asp-validation-for="Price" class="text-danger"></span>
             </div>
-            @{ 
-                // TODO: Add ingredient and category for editing here as well
+            <div class="form-control-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-control-group">
+                <label asp-for="Ingredients" class="control-label"></label>
+                <select asp-for="Ingredients" class="form-control" asp-items="ingredients">
+                    <option selected="selected"></option>
+                </select>
+                <span asp-validation-for="Ingredients" class="text-danger"></span>
+            </div>
+            @{
+// TODO: Add ingredient and category for editing here as well
             }
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-default" />

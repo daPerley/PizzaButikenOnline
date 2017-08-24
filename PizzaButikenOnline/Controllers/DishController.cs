@@ -36,7 +36,7 @@ namespace PizzaButikenOnline.Controllers
 
         public ActionResult Create()
         {
-            var viewModel = new CreateDishViewModel
+            var viewModel = new DishViewModel
             {
                 Categories = _context.Categories.ToList(),
                 Ingredients = _context.Ingredients.ToList()
@@ -46,7 +46,7 @@ namespace PizzaButikenOnline.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(CreateDishViewModel viewModel)
+        public ActionResult Create(DishViewModel viewModel)
         {
             try
             {
@@ -69,7 +69,7 @@ namespace PizzaButikenOnline.Controllers
                 _context.Dishes.Add(dish);
                 _context.SaveChanges();
 
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Dish");
             }
             catch
             {
@@ -80,17 +80,44 @@ namespace PizzaButikenOnline.Controllers
         // GET: Dish/Edit/5
         public ActionResult Edit(int id)
         {
-            return View(_context.Dishes.FirstOrDefault(x => x.Id == id));
+            // TODO: Send a create dish viewmodel with the view instead of id
+
+            var dish = _context.Dishes.FirstOrDefault(x => x.Id == id);
+
+            var viewModel = new DishViewModel
+            {
+                Name = dish.Name,
+                Price = dish.Price,
+                Description = dish.Description,
+                Ingredients = _context.Ingredients.ToList(), // TODO: Make sure that this adds both all ingredients as well as the dishs ingredients
+                CategoryId = dish.CategoryId,
+                Categories = _context.Categories.ToList()
+            };
+
+            return View(viewModel);
         }
 
         // POST: Dish/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(int id, DishViewModel viewModel)
         {
+            // TODO: Add validation, no exceptions!
+
             try
             {
                 // TODO: Add update logic here
+                var dish = _context.Dishes.FirstOrDefault(d => d.Id == id);
+
+                // TODO: Replace collection with a viewModel and replace the dish values with the ones from the model
+                dish.Name = viewModel.Name;
+                dish.Price = viewModel.Price;
+                dish.Description = viewModel.Description;
+                dish.CategoryId = viewModel.CategoryId;
+                dish.Ingredients = viewModel.Ingredients.ToList(); // TODO: Delete the old ones first!
+
+                _context.Dishes.Update(dish);
+                _context.SaveChanges();
 
                 return RedirectToAction(nameof(Index));
             }
@@ -100,17 +127,17 @@ namespace PizzaButikenOnline.Controllers
             }
         }
 
-        // GET: Dish/Delete/5
         public ActionResult Delete(int id)
         {
             return View(_context.Dishes.FirstOrDefault(x => x.Id == id));
         }
 
-        // POST: Dish/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, IFormCollection collection)
         {
+            // TODO: Add validation, no exceptions!
+
             try
             {
                 var dish = _context.Dishes.FirstOrDefault(d => d.Id == id);

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace PizzaButikenOnline.Models.DishViewModels
 {
-    public class CreateDishViewModel
+    public class DishViewModel
     {
         [Required]
         public string Name { get; set; }
