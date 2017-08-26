@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 using PizzaButikenOnline.Data;
 using PizzaButikenOnline.Models;
 using PizzaButikenOnline.Models.DishViewModels;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace PizzaButikenOnline.Controllers
@@ -22,18 +21,11 @@ namespace PizzaButikenOnline.Controllers
 
         public ActionResult Index()
         {
-            var dishes = _context.Dishes.Include(d => d.Category).Include(d => d.IngredientDish).ToList();
-
-            foreach (var dish in dishes)
-            {
-                var ingredients = new List<Ingredient>();
-                foreach (var id in dish.IngredientDish)
-                {
-                    ingredients.Add(_context.Ingredients.FirstOrDefault(i => i.Id == id.IngredientId));
-                }
-
-                dish.Ingredients = ingredients;
-            }
+            var dishes = _context.Dishes
+                .Include(d => d.IngredientDish)
+                .ThenInclude(id => id.Ingredient)
+                .Include(d => d.Category)
+                .ToList();
 
             return View(dishes);
         }

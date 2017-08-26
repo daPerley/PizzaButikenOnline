@@ -54,12 +54,14 @@
                     @Html.ActionLink("Delete", "Delete", new { id = item.Id })
                 </td>
                 <td>
-                    @if (item.Ingredients != null)
+                    @if (item.IngredientDish != null)
                     {
-                        @foreach (var ingredient in item.Ingredients)
-                        {
-                            <p>@ingredient.Name</p>
-                        }
+                        <p>
+                            @foreach (var ingredient in item.IngredientDish)
+                            {
+                                @ingredient.Ingredient.Name <span> </span>
+                            }
+                        </p>
                     }
                 </td>
             </tr>

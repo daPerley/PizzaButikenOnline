@@ -10,6 +10,6 @@ namespace PizzaButikenOnline.Models
         [Required, MaxLength(25), MinLength(3)]
         public string Name { get; set; }
 
-        public virtual ICollection<IngredientDish> IngredientDish { get; set; }
+        public ICollection<IngredientDish> IngredientDish { get; set; }
     }
 }
