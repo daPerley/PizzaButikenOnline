@@ -7,6 +7,7 @@
 <h2>Add dish</h2>
 @using (Html.BeginForm("Create", "Dish"))
 {
+    @Html.AntiForgeryToken()
     <div class="form-control-group">
         <label asp-for="CategoryId" class="control-label"></label>
         <select asp-for="CategoryId" class="form-control" asp-items="categories">

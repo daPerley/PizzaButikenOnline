@@ -33,3 +33,52 @@
         display: none;
     }
 }
+
+/* Bootstrap Override */
+body {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 17px;
+    line-height: 1.5;
+}
+
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+    font-family: Shrikhand;
+    color: #c21c21;
+}
+
+.form-control {
+    -ms-border-radius: 9px;
+    border-radius: 9px;
+    font-size: 17px;
+    padding: 20px 15px;
+}
+
+.navbar-inverse {
+    background-color: #c21c21;
+    border-color: #c21c21;
+}
+
+    .navbar-inverse .navbar-nav > li > a {
+        color: #fff;
+    }
+
+    .navbar-inverse .navbar-brand {
+        color: #fff;
+        font-weight: 700;
+    }
+
+    .navbar-inverse .navbar-nav > .open > a,
+    .navbar-inverse .navbar-nav > .open > a:hover,
+    .navbar-inverse .navbar-nav > .open > a:focus {
+        background-color: rgba(205, 40, 39, 0.55);
+    }
+
+    .navbar-inverse .navbar-nav > .dropdown > ul {
+        -webkit-box-shadow: none;
+        box-shadow: none;
+    }
+
+    .navbar-inverse .navbar-nav > .dropdown > a .caret {
+        border-top-color: #fff;
+        border-bottom-color: #fff;
+    }

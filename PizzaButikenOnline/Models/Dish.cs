@@ -17,11 +17,10 @@ namespace PizzaButikenOnline.Models
         [Required]
         public string Description { get; set; }
 
+        [Required]
         public ICollection<Ingredient> Ingredients { get; set; }
 
-        public Category Category { get; set; }
-
         [Required]
-        public int CategoryId { get; set; }
+        public Category Category { get; set; }
     }
 }

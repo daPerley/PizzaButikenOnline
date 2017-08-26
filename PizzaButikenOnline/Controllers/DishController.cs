@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using PizzaButikenOnline.Data;
 using PizzaButikenOnline.Models;
 using PizzaButikenOnline.Models.DishViewModels;
@@ -22,9 +23,7 @@ namespace PizzaButikenOnline.Controllers
         {
             //TODO: Add some sort of lazy loading to keep the data in the memory here
 
-            //TODO: Figure if you're going to have a menu model storing category/ingrediens/category or if this is enough with a partial view and repositroy/service
-
-            return View(_context.Dishes.ToList());
+            return View(_context.Dishes.Include(c => c.Category).Include(i => i.Ingredients).ToList());
         }
 
         public ActionResult Details(int id)
@@ -62,7 +61,7 @@ namespace PizzaButikenOnline.Controllers
                     Name = viewModel.Name,
                     Price = viewModel.Price,
                     Description = viewModel.Description,
-                    CategoryId = viewModel.CategoryId,
+                    Category = _context.Categories.First(c => c.Id == viewModel.CategoryId),
                     Ingredients = viewModel.Ingredients.ToList()
                 };
 
@@ -82,7 +81,7 @@ namespace PizzaButikenOnline.Controllers
         {
             // TODO: Send a create dish viewmodel with the view instead of id
 
-            var dish = _context.Dishes.FirstOrDefault(x => x.Id == id);
+            var dish = _context.Dishes.Include(c => c.Category).Include(i => i.Ingredients).FirstOrDefault(x => x.Id == id);
 
             var viewModel = new DishViewModel
             {
@@ -90,7 +89,7 @@ namespace PizzaButikenOnline.Controllers
                 Price = dish.Price,
                 Description = dish.Description,
                 Ingredients = _context.Ingredients.ToList(), // TODO: Make sure that this adds both all ingredients as well as the dishs ingredients
-                CategoryId = dish.CategoryId,
+                CategoryId = dish.Category.Id,
                 Categories = _context.Categories.ToList()
             };
 
@@ -113,7 +112,7 @@ namespace PizzaButikenOnline.Controllers
                 dish.Name = viewModel.Name;
                 dish.Price = viewModel.Price;
                 dish.Description = viewModel.Description;
-                dish.CategoryId = viewModel.CategoryId;
+                dish.Category = _context.Categories.First(c => c.Id == viewModel.CategoryId);
                 dish.Ingredients = viewModel.Ingredients.ToList(); // TODO: Delete the old ones first!
 
                 _context.Dishes.Update(dish);

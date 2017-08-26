@@ -94,7 +94,7 @@ namespace PizzaButikenOnline.Data
                             x.Name == "Skinka" ||
                             x.Name == "Champinjoner")
                             .ToList(),
-                        CategoryId = categories.FirstOrDefault(x => x.Name == "Pizza").Id
+                        Category = categories.FirstOrDefault(x => x.Name == "Pizza")
                     },
                     new Dish {
                         Name = "Margaritha",
@@ -105,7 +105,7 @@ namespace PizzaButikenOnline.Data
                             x.Name == "Ost" ||
                             x.Name == "Skinka")
                             .ToList(),
-                        CategoryId = categories.FirstOrDefault(x => x.Name == "Pizza").Id
+                        Category = categories.FirstOrDefault(x => x.Name == "Pizza")
                     },
                     new Dish {
                         Name = "Hawaii",
@@ -117,7 +117,7 @@ namespace PizzaButikenOnline.Data
                             x.Name == "Skinka" ||
                             x.Name == "Annanas")
                             .ToList(),
-                        CategoryId = categories.FirstOrDefault(x => x.Name == "Pizza").Id
+                        Category = categories.FirstOrDefault(x => x.Name == "Pizza")
                     },
                     new Dish {
                         Name = "Kebabpizza",
@@ -129,79 +129,79 @@ namespace PizzaButikenOnline.Data
                             x.Name == "Kebab" ||
                             x.Name == "Fefferoni")
                             .ToList(),
-                        CategoryId = categories.FirstOrDefault(x => x.Name == "Pizza").Id
+                        Category = categories.FirstOrDefault(x => x.Name == "Pizza")
                     },
                     new Dish {
                         Name = "Kebab i bröd",
                         Price = 60,
-                        Description = "A pizza",
+                        Description = "En kebab",
                         Ingredients = ingredients.Where(x =>
                             x.Name == "Vitlökssås" ||
                             x.Name == "Tomat" ||
                             x.Name == "Kebab" ||
                             x.Name == "Fefferoni")
                             .ToList(),
-                        CategoryId = categories.FirstOrDefault(x => x.Name == "Övrigt").Id
+                        Category = categories.FirstOrDefault(x => x.Name == "Övrigt")
                     },
                     new Dish {
                         Name = "Kebabrulle",
                         Price = 75,
-                        Description = "A pizza",
+                        Description = "En rulle",
                         Ingredients = ingredients.Where(x =>
                             x.Name == "Vitlökssås" ||
                             x.Name == "Tomat" ||
                             x.Name == "Kebab" ||
                             x.Name == "Fefferoni")
                             .ToList(),
-                        CategoryId = categories.FirstOrDefault(x => x.Name == "Övrigt").Id
+                        Category = categories.FirstOrDefault(x => x.Name == "Övrigt")
                     },
                     new Dish {
                         Name = "Kycklingrulle",
                         Price = 75,
-                        Description = "A pizza",
+                        Description = "En rulle",
                         Ingredients = ingredients.Where(x =>
                             x.Name == "Vitlökssås" ||
                             x.Name == "Tomat" ||
                             x.Name == "Kyckling" ||
                             x.Name == "Gurka")
                             .ToList(),
-                        CategoryId = categories.FirstOrDefault(x => x.Name == "Övrigt").Id
+                        Category = categories.FirstOrDefault(x => x.Name == "Övrigt")
                     },
                     new Dish {
                         Name = "Ceasarsallad",
                         Price = 85,
-                        Description = "A pizza",
+                        Description = "En sallad",
                         Ingredients = ingredients.Where(x =>
                             x.Name == "Ceasardressing" ||
                             x.Name == "Parmesan" ||
                             x.Name == "Kyckling" ||
                             x.Name == "Krutonger")
                             .ToList(),
-                        CategoryId = categories.FirstOrDefault(x => x.Name == "Sallad").Id
+                        Category = categories.FirstOrDefault(x => x.Name == "Sallad")
                     },
                     new Dish {
                         Name = "Kebabsallad",
                         Price = 85,
-                        Description = "A pizza",
+                        Description = "En sallad",
                         Ingredients = ingredients.Where(x =>
                             x.Name == "Vitlökssås" ||
                             x.Name == "Tomat" ||
                             x.Name == "Kebab" ||
                             x.Name == "Fefferoni")
                             .ToList(),
-                        CategoryId = categories.FirstOrDefault(x => x.Name == "Sallad").Id
+                        Category = categories.FirstOrDefault(x => x.Name == "Sallad")
                     },
                     new Dish {
                         Name = "Skinksallad",
                         Price = 85,
-                        Description = "A pizza",
+                        Description = "En sallad",
                         Ingredients = ingredients.Where(x =>
                             x.Name == "Gurka" ||
                             x.Name == "Tomat" ||
                             x.Name == "Skinka" ||
                             x.Name == "Isbergssallad")
                             .ToList(),
-                        CategoryId = categories.FirstOrDefault(x => x.Name == "Sallad").Id
+                        Category = categories.FirstOrDefault(x => x.Name == "Sallad")
                     }
                 });
                 context.SaveChanges();
