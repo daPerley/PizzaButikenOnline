@@ -24,6 +24,6 @@ namespace PizzaButikenOnline.Models
 
         public ICollection<IngredientDish> IngredientDish { get; set; }
 
-        public virtual ICollection<Ingredient> Ingredients { get; set; }
+        public ICollection<Ingredient> Ingredients { get; set; }
     }
 }
