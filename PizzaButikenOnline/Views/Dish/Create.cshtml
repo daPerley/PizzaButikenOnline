@@ -4,7 +4,7 @@
     var categories = new SelectList(Model.Categories, "Id", "Name");
     var ingredients = new SelectList(Model.Ingredients, "Id", "Name");
 }
-<h2>Add dish</h2>
+<h2>Lägg till ny rätt</h2>
 @using (Html.BeginForm("Create", "Dish"))
 {
     @Html.AntiForgeryToken()
@@ -31,13 +31,16 @@
         <span asp-validation-for="Description" class="text-danger"></span>
     </div>
     <div class="form-control-group">
-        <label asp-for="Ingredients" class="control-label"></label>
-        <select asp-for="Ingredients" class="form-control" asp-items="ingredients">
+        <label asp-for="UsedIngredientIds" class="control-label"></label>
+        <select asp-for="UsedIngredientIds" class="form-control" asp-items="ingredients">
             <option selected="selected"></option>
         </select>
-        <span asp-validation-for="Ingredients" class="text-danger"></span>
+        <span asp-validation-for="UsedIngredientIds" class="text-danger"></span>
     </div>
-    <button type="submit" class="btn btn-primary">Save</button>
+    <button type="submit" class="btn btn-primary">Spara</button>
+    <div>
+        <a asp-action="Index">Tillbaka</a>
+    </div>
 }
 
 @section scripts {

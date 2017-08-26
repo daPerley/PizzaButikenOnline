@@ -50,7 +50,8 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     -ms-border-radius: 9px;
     border-radius: 9px;
     font-size: 17px;
-    padding: 20px 15px;
+    padding: 0 15px;
+    height: 38px;
 }
 
 .navbar-inverse {
@@ -71,7 +72,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     .navbar-inverse .navbar-nav > .open > a,
     .navbar-inverse .navbar-nav > .open > a:hover,
     .navbar-inverse .navbar-nav > .open > a:focus {
-        background-color: rgba(205, 40, 39, 0.55);
+        background-color: rgba(205, 40, 39, 0.75);
     }
 
     .navbar-inverse .navbar-nav > .dropdown > ul {
@@ -82,4 +83,8 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     .navbar-inverse .navbar-nav > .dropdown > a .caret {
         border-top-color: #fff;
         border-bottom-color: #fff;
+    }
+
+    .navbar-inverse btn btn-link navbar-btn navbar-link {
+        color: #fff;
     }

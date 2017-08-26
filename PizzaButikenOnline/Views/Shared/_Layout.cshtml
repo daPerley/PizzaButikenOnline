@@ -32,7 +32,14 @@
                 <ul class="nav navbar-nav">
                     @if (User.IsInRole("Admin"))
                     {
-                        <li><a asp-area="" asp-controller="Dish" asp-action="Index">Dishes</a></li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Hantera <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a asp-area="" asp-controller="Dish" asp-action="Index">Rätter</a></li>
+                                <li><a asp-area="" asp-controller="Categories" asp-action="Index">Kategorier</a></li>
+                                <li><a asp-area="" asp-controller="Ingredients" asp-action="Index">Ingredienser</a></li>
+                            </ul>
+                        </li>
                     }
                 </ul>
                 @await Html.PartialAsync("_LoginPartial")

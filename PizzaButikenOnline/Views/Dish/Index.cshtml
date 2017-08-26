@@ -4,10 +4,10 @@
     ViewData["Title"] = "Index";
 }
 
-<h2>Index</h2>
+<h2>Rätter</h2>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a class="btn btn-default" asp-action="Create">Skapa ny</a>
 </p>
 <table class="table">
     <thead>
@@ -25,10 +25,10 @@
                 @Html.DisplayNameFor(model => model.Price)
             </th>
             <th>
-                Action
+                Hantera
             </th>
             <th>
-                Ingredients
+                @Html.DisplayNameFor(model => model.Ingredients)
             </th>
         </tr>
     </thead>
@@ -49,9 +49,8 @@
                     @Html.DisplayFor(modelItem => item.Price)
                 </td>
                 <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                    @Html.ActionLink("Redigera", "Edit", new { id = item.Id }) |
+                    @Html.ActionLink("Ta bort", "Delete", new { id = item.Id })
                 </td>
                 <td>
                     @if (item.IngredientDish != null)
