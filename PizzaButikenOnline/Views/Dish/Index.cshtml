@@ -28,7 +28,7 @@
                 Action
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Ingredients)
+                Ingredients
             </th>
         </tr>
     </thead>
@@ -54,11 +54,11 @@
                     @Html.ActionLink("Delete", "Delete", new { id = item.Id })
                 </td>
                 <td>
-                    @if (item.Ingredients != null)
+                    @if (item.IngredientDish != null)
                     {
-                        @foreach (var ingredient in item.Ingredients)
+                        @foreach (var ingredient in item.IngredientDish)
                         {
-                            <p>@ingredient.Name</p>
+                            <p>@ingredient.IngredientId</p>
                         }
                     }
                 </td>

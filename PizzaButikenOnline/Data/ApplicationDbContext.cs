@@ -18,16 +18,18 @@ namespace PizzaButikenOnline.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
 
-            builder.Entity<Dish>()
-                .HasMany(x => x.Ingredients);
+            builder.Entity<IngredientDish>()
+            .HasKey(id => new { id.DishId, id.IngredientId });
 
-            builder.Entity<Ingredient>()
-                .HasMany(x => x.Dishes);
+            builder.Entity<IngredientDish>()
+            .HasOne(id => id.Dish)
+            .WithMany(d => d.IngredientDish)
+            .HasForeignKey(di => di.DishId);
 
-            builder.Entity<Category>()
-                .HasMany(c => c.Dishes)
-                .WithOne(e => e.Category)
-                .IsRequired();
+            builder.Entity<IngredientDish>()
+            .HasOne(id => id.Ingredient)
+            .WithMany(i => i.IngredientDish)
+            .HasForeignKey(di => di.IngredientId);
 
             base.OnModelCreating(builder);
             // Customize the ASP.NET Identity model and override the defaults if needed.

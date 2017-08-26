@@ -18,9 +18,12 @@ namespace PizzaButikenOnline.Models
         public string Description { get; set; }
 
         [Required]
-        public ICollection<Ingredient> Ingredients { get; set; }
+        public int CategoryId { get; set; }
 
-        [Required]
         public Category Category { get; set; }
+
+        public ICollection<IngredientDish> IngredientDish { get; set; }
+
+        public virtual ICollection<Ingredient> Ingredients { get; set; }
     }
 }

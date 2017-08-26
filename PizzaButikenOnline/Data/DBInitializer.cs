@@ -88,124 +88,178 @@ namespace PizzaButikenOnline.Data
                         Name = "Capricciosa",
                         Price = 70,
                         Description = "A pizza",
-                        Ingredients = ingredients.Where(x =>
-                            x.Name == "Tomatsås" ||
-                            x.Name == "Ost" ||
-                            x.Name == "Skinka" ||
-                            x.Name == "Champinjoner")
-                            .ToList(),
-                        Category = categories.FirstOrDefault(x => x.Name == "Pizza")
+                        CategoryId = 1
                     },
                     new Dish {
                         Name = "Margaritha",
                         Price = 65,
                         Description = "A pizza",
-                        Ingredients = ingredients.Where(x =>
-                            x.Name == "Tomatsås" ||
-                            x.Name == "Ost" ||
-                            x.Name == "Skinka")
-                            .ToList(),
-                        Category = categories.FirstOrDefault(x => x.Name == "Pizza")
+                        CategoryId = 1
                     },
                     new Dish {
                         Name = "Hawaii",
                         Description = "A pizza",
                         Price = 85,
-                        Ingredients = ingredients.Where(x =>
-                            x.Name == "Tomatsås" ||
-                            x.Name == "Ost" ||
-                            x.Name == "Skinka" ||
-                            x.Name == "Annanas")
-                            .ToList(),
-                        Category = categories.FirstOrDefault(x => x.Name == "Pizza")
+                        CategoryId = 1
                     },
                     new Dish {
                         Name = "Kebabpizza",
                         Price = 90,
                         Description = "A pizza",
-                        Ingredients = ingredients.Where(x =>
-                            x.Name == "Tomatsås" ||
-                            x.Name == "Ost" ||
-                            x.Name == "Kebab" ||
-                            x.Name == "Fefferoni")
-                            .ToList(),
-                        Category = categories.FirstOrDefault(x => x.Name == "Pizza")
+                        CategoryId = 1
                     },
                     new Dish {
                         Name = "Kebab i bröd",
                         Price = 60,
                         Description = "En kebab",
-                        Ingredients = ingredients.Where(x =>
-                            x.Name == "Vitlökssås" ||
-                            x.Name == "Tomat" ||
-                            x.Name == "Kebab" ||
-                            x.Name == "Fefferoni")
-                            .ToList(),
-                        Category = categories.FirstOrDefault(x => x.Name == "Övrigt")
+                        CategoryId = 3
                     },
                     new Dish {
                         Name = "Kebabrulle",
                         Price = 75,
                         Description = "En rulle",
-                        Ingredients = ingredients.Where(x =>
-                            x.Name == "Vitlökssås" ||
-                            x.Name == "Tomat" ||
-                            x.Name == "Kebab" ||
-                            x.Name == "Fefferoni")
-                            .ToList(),
-                        Category = categories.FirstOrDefault(x => x.Name == "Övrigt")
+                        CategoryId = 3
                     },
                     new Dish {
                         Name = "Kycklingrulle",
                         Price = 75,
                         Description = "En rulle",
-                        Ingredients = ingredients.Where(x =>
-                            x.Name == "Vitlökssås" ||
-                            x.Name == "Tomat" ||
-                            x.Name == "Kyckling" ||
-                            x.Name == "Gurka")
-                            .ToList(),
-                        Category = categories.FirstOrDefault(x => x.Name == "Övrigt")
+                        CategoryId = 3
                     },
                     new Dish {
                         Name = "Ceasarsallad",
                         Price = 85,
                         Description = "En sallad",
-                        Ingredients = ingredients.Where(x =>
-                            x.Name == "Ceasardressing" ||
-                            x.Name == "Parmesan" ||
-                            x.Name == "Kyckling" ||
-                            x.Name == "Krutonger")
-                            .ToList(),
-                        Category = categories.FirstOrDefault(x => x.Name == "Sallad")
+                        CategoryId = 2
                     },
                     new Dish {
                         Name = "Kebabsallad",
                         Price = 85,
                         Description = "En sallad",
-                        Ingredients = ingredients.Where(x =>
-                            x.Name == "Vitlökssås" ||
-                            x.Name == "Tomat" ||
-                            x.Name == "Kebab" ||
-                            x.Name == "Fefferoni")
-                            .ToList(),
-                        Category = categories.FirstOrDefault(x => x.Name == "Sallad")
+                        CategoryId = 2
                     },
                     new Dish {
                         Name = "Skinksallad",
                         Price = 85,
                         Description = "En sallad",
-                        Ingredients = ingredients.Where(x =>
-                            x.Name == "Gurka" ||
-                            x.Name == "Tomat" ||
-                            x.Name == "Skinka" ||
-                            x.Name == "Isbergssallad")
-                            .ToList(),
-                        Category = categories.FirstOrDefault(x => x.Name == "Sallad")
+                        CategoryId = 2
                     }
                 });
                 context.SaveChanges();
+
+                /* INGREDIENT - DISH RELATIONS */
+                context.AddRange(new List<IngredientDish>
+                {
+                    new IngredientDish
+                {
+                    DishId = 1,
+                    IngredientId = 1
+                },
+                    new IngredientDish
+                {
+                    DishId = 1,
+                    IngredientId = 2
+                },
+                    new IngredientDish
+                {
+                    DishId = 1,
+                    IngredientId = 3
+                },
+                    new IngredientDish
+                {
+                    DishId = 2,
+                    IngredientId = 1
+                },
+                    new IngredientDish
+                {
+                    DishId = 2,
+                    IngredientId = 5
+                },
+                    new IngredientDish
+                {
+                    DishId = 2,
+                    IngredientId = 6
+                },
+                    new IngredientDish
+                {
+                    DishId = 2,
+                    IngredientId = 7
+                },
+                    new IngredientDish
+                {
+                    DishId = 3,
+                    IngredientId = 13
+                },
+                    new IngredientDish
+                {
+                    DishId = 3,
+                    IngredientId = 7
+                },
+                    new IngredientDish
+                {
+                    DishId = 4,
+                    IngredientId = 7
+                },
+                    new IngredientDish
+                {
+                    DishId = 4,
+                    IngredientId = 2
+                },
+                    new IngredientDish
+                {
+                    DishId = 4,
+                    IngredientId = 1
+                },
+                    new IngredientDish
+                {
+                    DishId = 5,
+                    IngredientId = 10
+                },
+                    new IngredientDish
+                {
+                    DishId = 6,
+                    IngredientId = 11
+                },
+                    new IngredientDish
+                {
+                    DishId = 6,
+                    IngredientId = 15
+                },
+                    new IngredientDish
+                {
+                    DishId = 7,
+                    IngredientId = 16
+                },
+                    new IngredientDish
+                {
+                    DishId = 7,
+                    IngredientId = 12
+                },
+                    new IngredientDish
+                {
+                    DishId = 8,
+                    IngredientId = 9
+                },
+                    new IngredientDish
+                {
+                    DishId = 8,
+                    IngredientId = 6
+                },
+                    new IngredientDish
+                {
+                    DishId = 9,
+                    IngredientId = 16
+                },
+                    new IngredientDish
+                {
+                    DishId = 10,
+                    IngredientId = 9
+                }
+                });
+
+                context.SaveChanges();
             }
+
         }
     }
 }

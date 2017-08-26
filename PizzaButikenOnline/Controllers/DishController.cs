@@ -23,7 +23,9 @@ namespace PizzaButikenOnline.Controllers
         {
             //TODO: Add some sort of lazy loading to keep the data in the memory here
 
-            return View(_context.Dishes.Include(c => c.Category).Include(i => i.Ingredients).ToList());
+            var dishes = _context.Dishes.Include(d => d.Category).Include(d => d.IngredientDish).ToList();
+
+            return View(dishes);
         }
 
         public ActionResult Details(int id)
@@ -61,8 +63,7 @@ namespace PizzaButikenOnline.Controllers
                     Name = viewModel.Name,
                     Price = viewModel.Price,
                     Description = viewModel.Description,
-                    Category = _context.Categories.First(c => c.Id == viewModel.CategoryId),
-                    Ingredients = viewModel.Ingredients.ToList()
+                    CategoryId = _context.Categories.First(c => c.Id == viewModel.CategoryId).Id
                 };
 
                 _context.Dishes.Add(dish);
@@ -81,7 +82,7 @@ namespace PizzaButikenOnline.Controllers
         {
             // TODO: Send a create dish viewmodel with the view instead of id
 
-            var dish = _context.Dishes.Include(c => c.Category).Include(i => i.Ingredients).FirstOrDefault(x => x.Id == id);
+            var dish = _context.Dishes.Include(d => d.IngredientDish).ThenInclude(di => di.Select(x => x.IngredientId)).Include(d => d.Category).FirstOrDefault(x => x.Id == id);
 
             var viewModel = new DishViewModel
             {
@@ -113,7 +114,6 @@ namespace PizzaButikenOnline.Controllers
                 dish.Price = viewModel.Price;
                 dish.Description = viewModel.Description;
                 dish.Category = _context.Categories.First(c => c.Id == viewModel.CategoryId);
-                dish.Ingredients = viewModel.Ingredients.ToList(); // TODO: Delete the old ones first!
 
                 _context.Dishes.Update(dish);
                 _context.SaveChanges();
