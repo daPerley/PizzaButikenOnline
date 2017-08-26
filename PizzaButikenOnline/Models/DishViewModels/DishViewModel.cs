@@ -15,6 +15,8 @@ namespace PizzaButikenOnline.Models.DishViewModels
         public string Description { get; set; }
 
         [Required]
+        public IEnumerable<int> UsedIngredientIds { get; set; }
+
         public IEnumerable<Ingredient> Ingredients { get; set; }
 
         [Required]

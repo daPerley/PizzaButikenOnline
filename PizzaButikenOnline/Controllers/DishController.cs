@@ -71,6 +71,18 @@ namespace PizzaButikenOnline.Controllers
                 _context.Dishes.Add(dish);
                 _context.SaveChanges();
 
+                foreach (var i in viewModel.UsedIngredientIds)
+                {
+                    var id = new IngredientDish
+                    {
+                        DishId = dish.Id,
+                        IngredientId = i
+                    };
+
+                    _context.IngredientDishes.Add(id);
+                    _context.SaveChanges();
+                }
+
                 return RedirectToAction("Index", "Dish");
             }
             catch
@@ -84,7 +96,11 @@ namespace PizzaButikenOnline.Controllers
         {
             // TODO: Send a create dish viewmodel with the view instead of id
 
-            var dish = _context.Dishes.Include(d => d.IngredientDish).ThenInclude(di => di.Select(x => x.IngredientId)).Include(d => d.Category).FirstOrDefault(x => x.Id == id);
+            var dish = _context.Dishes
+                .Include(d => d.IngredientDish)
+                .ThenInclude(ind => ind.Ingredient)
+                .Include(d => d.Category)
+                .FirstOrDefault(d => d.Id == id);
 
             var viewModel = new DishViewModel
             {
@@ -92,7 +108,8 @@ namespace PizzaButikenOnline.Controllers
                 Price = dish.Price,
                 Description = dish.Description,
                 Ingredients = _context.Ingredients.ToList(), // TODO: Make sure that this adds both all ingredients as well as the dishs ingredients
-                CategoryId = dish.Category.Id,
+                UsedIngredientIds = dish.IngredientDish.Select(i => i.IngredientId).ToList(),
+                CategoryId = dish.CategoryId,
                 Categories = _context.Categories.ToList()
             };
 
@@ -108,10 +125,12 @@ namespace PizzaButikenOnline.Controllers
 
             try
             {
-                // TODO: Add update logic here
-                var dish = _context.Dishes.FirstOrDefault(d => d.Id == id);
+                var dish = _context.Dishes
+                .Include(d => d.IngredientDish)
+                .ThenInclude(ind => ind.Ingredient)
+                .Include(d => d.Category)
+                .FirstOrDefault(d => d.Id == id);
 
-                // TODO: Replace collection with a viewModel and replace the dish values with the ones from the model
                 dish.Name = viewModel.Name;
                 dish.Price = viewModel.Price;
                 dish.Description = viewModel.Description;
@@ -119,6 +138,27 @@ namespace PizzaButikenOnline.Controllers
 
                 _context.Dishes.Update(dish);
                 _context.SaveChanges();
+
+                if (dish.IngredientDish.Select(ind => ind.IngredientId) != viewModel.UsedIngredientIds)
+                {
+                    var oldRel = _context.IngredientDishes.Where(ind => ind.DishId == dish.Id).ToList();
+
+                    _context.IngredientDishes.RemoveRange(oldRel);
+                    _context.SaveChanges();
+
+                    foreach (var i in viewModel.UsedIngredientIds)
+                    {
+                        var newRel = new IngredientDish
+                        {
+                            DishId = dish.Id,
+                            IngredientId = i
+                        };
+
+                        _context.IngredientDishes.Add(newRel);
+                    }
+
+                    _context.SaveChanges();
+                }
 
                 return RedirectToAction(nameof(Index));
             }

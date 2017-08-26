@@ -9,6 +9,7 @@ namespace PizzaButikenOnline.Data
         public DbSet<Dish> Dishes { get; set; }
         public DbSet<Ingredient> Ingredients { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<IngredientDish> IngredientDishes { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
