@@ -71,7 +71,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     .navbar-inverse .navbar-nav > .open > a,
     .navbar-inverse .navbar-nav > .open > a:hover,
     .navbar-inverse .navbar-nav > .open > a:focus {
-        background-color: rgba(205, 40, 39, 0.55);
+        background-color: rgba(205, 40, 39, 0.75);
     }
 
     .navbar-inverse .navbar-nav > .dropdown > ul {
@@ -82,4 +82,8 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     .navbar-inverse .navbar-nav > .dropdown > a .caret {
         border-top-color: #fff;
         border-bottom-color: #fff;
+    }
+
+    .navbar-inverse btn btn-link navbar-btn navbar-link {
+        color: #fff;
     }
