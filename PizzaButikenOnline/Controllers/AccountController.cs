@@ -1,18 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
+﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using PizzaButikenOnline.Models;
 using PizzaButikenOnline.Models.AccountViewModels;
 using PizzaButikenOnline.Services;
+using System;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace PizzaButikenOnline.Controllers
 {
@@ -220,7 +216,15 @@ namespace PizzaButikenOnline.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser
+                {
+                    UserName = model.Email,
+                    Email = model.Email,
+                    CustomerName = model.CustomerName,
+                    Street = model.Street,
+                    PostalCode = model.PostalCode,
+                    City = model.City
+                };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
