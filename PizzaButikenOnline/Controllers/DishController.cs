@@ -35,7 +35,7 @@ namespace PizzaButikenOnline.Controllers
             var viewModel = new DishViewModel
             {
                 Categories = _context.Categories.ToList(),
-                Ingredients = _context.Ingredients.ToList()
+                Ingredients = _context.Ingredients.OrderBy(i => i.Name).ToList()
             };
             return View(viewModel);
         }
@@ -49,7 +49,7 @@ namespace PizzaButikenOnline.Controllers
                 if (!ModelState.IsValid)
                 {
                     viewModel.Categories = _context.Categories.ToList();
-                    viewModel.Ingredients = _context.Ingredients.ToList();
+                    viewModel.Ingredients = _context.Ingredients.OrderBy(i => i.Name).ToList();
                     return View("Create", viewModel);
                 }
 

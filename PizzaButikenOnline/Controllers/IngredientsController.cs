@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PizzaButikenOnline.Data;
 using PizzaButikenOnline.Models;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace PizzaButikenOnline.Controllers
 {
@@ -22,7 +19,7 @@ namespace PizzaButikenOnline.Controllers
         // GET: Ingredients
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Ingredients.ToListAsync());
+            return View(await _context.Ingredients.OrderBy(i => i.Name).ToListAsync());
         }
 
         // GET: Ingredients/Create
