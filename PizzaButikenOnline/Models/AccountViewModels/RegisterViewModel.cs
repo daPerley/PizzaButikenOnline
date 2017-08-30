@@ -20,9 +20,16 @@ namespace PizzaButikenOnline.Models.AccountViewModels
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
 
+        [Display(Name = "För- och efternamn")]
         public string CustomerName { get; set; }
+
+        [Display(Name = "Postkod")]
         public int PostalCode { get; set; }
+
+        [Display(Name = "Gatuadress")]
         public string Street { get; set; }
+
+        [Display(Name = "Postort")]
         public string City { get; set; }
     }
 }
