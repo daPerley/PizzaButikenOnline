@@ -33,7 +33,7 @@ namespace PizzaButikenOnline.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name")] Ingredient ingredient)
+        public async Task<IActionResult> Create([Bind("Id,Name,Price")] Ingredient ingredient)
         {
             if (ModelState.IsValid)
             {
@@ -65,7 +65,7 @@ namespace PizzaButikenOnline.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Ingredient ingredient)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Price")] Ingredient ingredient)
         {
             if (id != ingredient.Id)
             {
