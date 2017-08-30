@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace PizzaButikenOnline.Models.AccountViewModels
 {
@@ -23,5 +19,17 @@ namespace PizzaButikenOnline.Models.AccountViewModels
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        [Display(Name = "För- och efternamn")]
+        public string CustomerName { get; set; }
+
+        [Display(Name = "Postkod")]
+        public int PostalCode { get; set; }
+
+        [Display(Name = "Gatuadress")]
+        public string Street { get; set; }
+
+        [Display(Name = "Postort")]
+        public string City { get; set; }
     }
 }
