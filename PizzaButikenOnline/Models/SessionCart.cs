@@ -25,9 +25,9 @@ namespace PizzaButikenOnline.Models
             Session.SetJson("Cart", this);
         }
 
-        public override void RemoveLine(Dish dish)
+        public override void RemoveLine(int cartLineId)
         {
-            base.RemoveLine(dish);
+            base.RemoveLine(cartLineId);
             Session.SetJson("Cart", this);
         }
 

@@ -9,28 +9,15 @@ namespace PizzaButikenOnline.Models
 
         public virtual void AddItem(Dish dish, int quantity)
         {
-            CartLine line = lineCollection
-                .Where(d => d.Dish.Id == dish.Id)
-                .FirstOrDefault();
-
-            if (line == null)
+            lineCollection.Add(new CartLine
             {
-                lineCollection.Add(new CartLine
-                {
-                    Dish = dish,
-                    Quantity = quantity
-                });
-            }
-            else
-            {
-                line.Quantity += quantity;
-
-                // TODO: Add logic for diffrent ingredients on dish here.
-            }
+                Dish = dish,
+                Quantity = quantity
+            });
         }
 
-        public virtual void RemoveLine(Dish dish) =>
-            lineCollection.RemoveAll(l => l.Dish.Id == dish.Id);
+        public virtual void RemoveLine(int cartLineId) =>
+           lineCollection.FirstOrDefault(l => l.CartLineId == cartLineId);
 
         public virtual decimal ComputeTotalValue() =>
             lineCollection.Sum(l => l.Dish.Price * l.Quantity);
