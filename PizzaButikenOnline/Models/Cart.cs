@@ -7,12 +7,11 @@ namespace PizzaButikenOnline.Models
     {
         private List<CartLine> lineCollection = new List<CartLine>();
 
-        public virtual void AddItem(Dish dish, int quantity)
+        public virtual void AddItem(Dish dish)
         {
             lineCollection.Add(new CartLine
             {
-                Dish = dish,
-                Quantity = quantity
+                Dish = dish
             });
         }
 
@@ -20,7 +19,7 @@ namespace PizzaButikenOnline.Models
            lineCollection.FirstOrDefault(l => l.CartLineId == cartLineId);
 
         public virtual decimal ComputeTotalValue() =>
-            lineCollection.Sum(l => l.Dish.Price * l.Quantity);
+            lineCollection.Sum(l => l.Dish.Price);
 
         // TODO: Add logic that count price of extra ingredients here
 
@@ -33,7 +32,6 @@ namespace PizzaButikenOnline.Models
     {
         public int CartLineId { get; set; }
         public Dish Dish { get; set; }
-        public int Quantity { get; set; }
 
         public ICollection<int> IngredientId { get; set; }
         public virtual ICollection<Ingredient> Ingredients { get; set; }

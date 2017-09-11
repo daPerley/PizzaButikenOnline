@@ -1,0 +1,40 @@
+﻿@model PizzaButikenOnline.Models.CartViewModels.CartIndexViewModel
+@{
+    ViewData["Title"] = "Kundvagn";
+}
+<h2>Kundvagn:</h2>
+
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Maträtt</th>
+            <th class="text-right">Pris</th>
+            <th class="text-right">Ändra</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var line in Model.Cart.Lines)
+        {
+            <tr>
+                <td class="text-left">@line.Dish.Name</td>
+                <td class="text-right">@line.Dish.Price.ToString("c")</td>
+                <td>
+                    <form asp-action="RemoveFromCart" method="post">
+                        <input type="hidden" name="DishID" value="@line.Dish.Id" />
+                        <button type="submit" class="btn btn-sm btn-danger pull-right">Ta bort</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <td class="text-right"><b>Totalt:</b></td>
+            <td class="text-right">
+                @Model.Cart.ComputeTotalValue().ToString("c")
+            </td>
+            <td></td>
+        </tr>
+    </tfoot>
+</table>

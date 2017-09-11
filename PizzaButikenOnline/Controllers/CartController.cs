@@ -17,37 +17,37 @@ namespace PizzaButikenOnline.Controllers
             _cart = cartService;
         }
 
-        public IActionResult Index(string returnUrl)
+        public IActionResult Index()
         {
             return View(new CartIndexViewModel
             {
-                Cart = _cart,
-                ReturnUrl = returnUrl
+                Cart = _cart
             });
         }
 
-        public IActionResult AddToCart(int dishId, string returnUrl)
+        [HttpPost]
+        public IActionResult AddToCart(int id)
         {
-            Dish dish = _context.Dishes.FirstOrDefault(d => d.Id == dishId);
+            Dish dish = _context.Dishes.FirstOrDefault(d => d.Id == id);
 
             if (dish != null)
             {
-                _cart.AddItem(dish, 1);
+                _cart.AddItem(dish);
             }
 
             return PartialView("Components/CartSummary/Default", _cart);
         }
 
-        public RedirectToActionResult RemoveFromCart(int CartLineId, string returnUrl)
+        public RedirectToActionResult RemoveFromCart(int cartLineId)
         {
-            var dish = _cart.Lines.FirstOrDefault(l => l.CartLineId == CartLineId);
+            var dish = _cart.Lines.FirstOrDefault(l => l.CartLineId == cartLineId);
 
             if (dish != null)
             {
                 _cart.RemoveLine(dish.CartLineId);
             }
 
-            return RedirectToAction("Index", new { returnUrl });
+            return RedirectToAction("Index", "Cart");
         }
     }
 }

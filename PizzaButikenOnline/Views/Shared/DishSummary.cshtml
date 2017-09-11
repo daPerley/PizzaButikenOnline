@@ -1,0 +1,23 @@
+﻿
+@model Dish
+
+<form id="@Model.Id" asp-action="AddToCart" asp-controller="Cart" data-ajax="true" data-ajax-method="POST" data-ajax-mode="replace" data-ajax-update="#shoppingCartView">
+    <input type="hidden" asp-for="Id" />
+    <row>
+        <div class="col-sm-8"><span class="text-uppercase">@Model.Name</span></div>
+        <div class="col-sm-4"><button type="submit" class="btn btn-success btn-sm pull-right">@Model.Price:-</button></div>
+    </row>
+    <row>
+        <div class="col-sm-12">
+            @if (Model.IngredientDish != null)
+            {
+                <p>
+                    @foreach (var ingredient in Model.IngredientDish)
+                    {
+                        @ingredient.Ingredient.Name <span> </span>
+                    }
+                </p>
+            }
+        </div>
+    </row>
+</form>

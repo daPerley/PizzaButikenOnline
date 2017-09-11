@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using PizzaButikenOnline.Data;
@@ -36,6 +32,9 @@ namespace PizzaButikenOnline
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient<UserManager<ApplicationUser>>();
+            services.AddScoped(SessionCart.GetCart);
+            services.AddMemoryCache();
+            services.AddSession();
 
             services.AddMvc();
         }
@@ -55,7 +54,7 @@ namespace PizzaButikenOnline
             }
 
             app.UseStaticFiles();
-
+            app.UseSession();
             app.UseAuthentication();
 
             app.UseMvc(routes =>

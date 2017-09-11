@@ -19,9 +19,9 @@ namespace PizzaButikenOnline.Models
         [JsonIgnore]
         public ISession Session { get; set; }
 
-        public override void AddItem(Dish dish, int quantity)
+        public override void AddItem(Dish dish)
         {
-            base.AddItem(dish, quantity);
+            base.AddItem(dish);
             Session.SetJson("Cart", this);
         }
 

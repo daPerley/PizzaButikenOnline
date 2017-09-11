@@ -9,24 +9,12 @@
 {
     <h3>@group.Key</h3>
 
-    foreach (var dish in group)
+    if (group.Count() > 0)
     {
-        <row>
-            <div class="col-sm-8"><span class="text-uppercase">@dish.Name</span></div>
-            <div class="col-sm-4">@dish.Price</div>
-        </row>
-        <row>
-            <div class="col-sm-12">
-                @if (dish.IngredientDish != null)
-                {
-                    <p>
-                        @foreach (var ingredient in dish.IngredientDish)
-                        {
-                            @ingredient.Ingredient.Name <span> </span>
-                        }
-                    </p>
-                }
-            </div>
-        </row>
+
+        @foreach (var d in group)
+        {
+            @Html.Partial("DishSummary", d)
+        }
     }
 }

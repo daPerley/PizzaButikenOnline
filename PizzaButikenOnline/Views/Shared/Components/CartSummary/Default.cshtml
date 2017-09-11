@@ -1,0 +1,15 @@
+﻿@model Cart
+
+<div id="shoppingCartView">
+    @if (Model.Lines.Count() > 0)
+    {
+        <div class="navbar-text">
+            <b>Kundvagn:</b>
+            @Model.Lines.Count() varor
+            @Model.ComputeTotalValue().ToString("c")
+        </div>
+    }
+    <a class="btn btn-sm btn-default navbar-btn" asp-controller="Cart" asp-action="Index">
+        <i class="fa fa-shopping-cart"></i>
+    </a>
+</div>
