@@ -39,10 +39,10 @@ namespace PizzaButikenOnline.Data
             builder.Entity<IngredientOrderDish>()
             .HasKey(id => new { id.OrderDishId, id.IngredientId });
 
-            builder.Entity<IngredientOrderDish>()
-            .HasOne(id => id.OrderDish)
-            .WithMany(d => d.IngredientOrderDishes)
-            .HasForeignKey(di => di.OrderDishId);
+            //builder.Entity<IngredientOrderDish>()
+            //.HasOne(id => id.OrderDish)
+            //.WithMany(d => d.IngredientOrderDishes)
+            //.HasForeignKey(di => di.OrderDishId);
 
             builder.Entity<IngredientOrderDish>()
             .HasOne(id => id.Ingredient)

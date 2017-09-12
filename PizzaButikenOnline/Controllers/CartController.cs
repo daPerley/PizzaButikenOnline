@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using PizzaButikenOnline.Data;
 using PizzaButikenOnline.Models;
 using PizzaButikenOnline.Models.CartViewModels;
@@ -28,7 +29,7 @@ namespace PizzaButikenOnline.Controllers
         [HttpPost]
         public IActionResult AddToCart(int id)
         {
-            Dish dish = _context.Dishes.FirstOrDefault(d => d.Id == id);
+            var dish = _context.Dishes.Include(d => d.Ingredients).FirstOrDefault(d => d.Id == id);
 
             if (dish != null)
             {

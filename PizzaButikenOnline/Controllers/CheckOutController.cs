@@ -3,7 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 using PizzaButikenOnline.Data;
 using PizzaButikenOnline.Models;
 using PizzaButikenOnline.Models.CheckOutViewModel;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace PizzaButikenOnline.Controllers
 {
@@ -20,7 +22,7 @@ namespace PizzaButikenOnline.Controllers
             _userManager = userManager;
         }
 
-        public IActionResult Index()
+        public IActionResult Checkout()
         {
             var checkout = new CheckoutViewModel();
 
@@ -46,7 +48,11 @@ namespace PizzaButikenOnline.Controllers
         [HttpPost]
         public IActionResult Checkout(CheckoutViewModel checkoutViewModel)
         {
-            var order = new Order();
+            var order = new Order
+            {
+                OrderDishes = new List<OrderDish>(),
+                DateTime = DateTime.Now
+            };
 
             if (User.Identity.IsAuthenticated && _userManager.GetUserId(User) != null)
             {
@@ -63,45 +69,36 @@ namespace PizzaButikenOnline.Controllers
                 };
             }
 
-            var orderDishes = new List<OrderDish>();
-
-            foreach (var dish in _cart.Lines)
+            if (_cart.Lines != null)
             {
-                var orderDish = new OrderDish
+                foreach (var line in _cart.Lines)
                 {
-                    Dish = dish.Dish,
-                    Order = order
-                };
-
-                var ingredientOrderDishes = new List<IngredientOrderDish>();
-
-                foreach (var ingredient in dish.Ingredients)
-                {
-                    var ingredientOrderDish = new IngredientOrderDish
+                    var orderDish = new OrderDish
                     {
-                        Ingredient = ingredient,
-                        OrderDish = orderDish
+                        DishId = line.Dish.Id,
+                        OrderId = order.Id,
+                        EditedIngredients = line.Dish.Ingredients.Select(i => new IngredientOrderDish
+                        {
+                            IngredientId = i.Id,
+                            OrderDishId = line.Dish.Id
+                        }).ToList()
                     };
 
-                    ingredientOrderDishes.Add(ingredientOrderDish);
+                    order.OrderDishes.Add(orderDish);
                 }
-
-                orderDish.IngredientOrderDishes = ingredientOrderDishes;
-
-                orderDishes.Add(orderDish);
             }
-
-            order.OrderDishes = orderDishes;
 
             _context.Orders.Add(order);
             _context.SaveChanges();
 
-            return View();
+            return RedirectToAction("CheckoutCompleted", order);
         }
 
-        public IActionResult CheckoutCompleted(int id)
+        public IActionResult CheckoutCompleted(Order order)
         {
-            return View();
+            _cart.Clear();
+
+            return View(order);
         }
     }
 }

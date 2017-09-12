@@ -28,10 +28,12 @@
                     <span class="icon-bar"></span>
                 </button>
                 <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">PizzaButikenOnline</a>
-                @await Component.InvokeAsync("CartSummary", new { })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
+                    <li>
+                        @await Component.InvokeAsync("CartSummary", new { })
+                    </li>
                     @if (User.IsInRole("Admin"))
                     {
                         <li class="dropdown">
