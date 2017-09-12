@@ -18,7 +18,11 @@ namespace PizzaButikenOnline.Data
             var aUser = new ApplicationUser()
             {
                 UserName = "test@user.com",
-                Email = "test@user.com"
+                Email = "test@user.com",
+                CustomerName = "Random Smurf",
+                Street = "Smurfgatan",
+                PostalCode = 07617,
+                City = "Smurftown"
             };
 
             var r = userManager.CreateAsync(aUser, "Abc12#Test");
@@ -26,7 +30,11 @@ namespace PizzaButikenOnline.Data
             var adminUser = new ApplicationUser()
             {
                 UserName = "test2@user.com",
-                Email = "test2@user.com"
+                Email = "test2@user.com",
+                CustomerName = "Random Smurf 2",
+                Street = "Smurfgatan 2",
+                PostalCode = 07627,
+                City = "Smurftown 2"
             };
 
             var r2 = userManager.CreateAsync(adminUser, "Abc12#Test");

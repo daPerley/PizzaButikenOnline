@@ -11,10 +11,10 @@ namespace PizzaButikenOnline.Controllers
         private readonly ApplicationDbContext _context;
         private Cart _cart;
 
-        public CartController(ApplicationDbContext context, Cart cartService)
+        public CartController(ApplicationDbContext context, Cart cart)
         {
             _context = context;
-            _cart = cartService;
+            _cart = cart;
         }
 
         public IActionResult Index()

@@ -10,6 +10,10 @@ namespace PizzaButikenOnline.Data
         public DbSet<Ingredient> Ingredients { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<IngredientDish> IngredientDishes { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderDish> OrderDishes { get; set; }
+        public DbSet<IngredientOrderDish> IngredientOrderDishes { get; set; }
+        public DbSet<AnonymousAddress> AnonymousAddresses { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -30,6 +34,19 @@ namespace PizzaButikenOnline.Data
             builder.Entity<IngredientDish>()
             .HasOne(id => id.Ingredient)
             .WithMany(i => i.IngredientDish)
+            .HasForeignKey(di => di.IngredientId);
+
+            builder.Entity<IngredientOrderDish>()
+            .HasKey(id => new { id.OrderDishId, id.IngredientId });
+
+            builder.Entity<IngredientOrderDish>()
+            .HasOne(id => id.OrderDish)
+            .WithMany(d => d.IngredientOrderDishes)
+            .HasForeignKey(di => di.OrderDishId);
+
+            builder.Entity<IngredientOrderDish>()
+            .HasOne(id => id.Ingredient)
+            .WithMany(i => i.IngredientOrderDish)
             .HasForeignKey(di => di.IngredientId);
 
             base.OnModelCreating(builder);

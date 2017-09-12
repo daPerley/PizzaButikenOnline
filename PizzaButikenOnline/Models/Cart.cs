@@ -15,6 +15,11 @@ namespace PizzaButikenOnline.Models
             });
         }
 
+        public virtual void EditItem(int cartLineId, Dish dish)
+        {
+            // TODO: Add logic to change ingredients here
+        }
+
         public virtual void RemoveLine(int cartLineId) =>
            lineCollection.FirstOrDefault(l => l.CartLineId == cartLineId);
 

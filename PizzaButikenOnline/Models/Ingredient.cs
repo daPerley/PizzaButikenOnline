@@ -13,5 +13,6 @@ namespace PizzaButikenOnline.Models
         public int Price { get; set; }
 
         public ICollection<IngredientDish> IngredientDish { get; set; }
+        public ICollection<IngredientOrderDish> IngredientOrderDish { get; set; }
     }
 }
