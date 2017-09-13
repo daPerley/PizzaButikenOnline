@@ -5,43 +5,51 @@
 }
 <h2>Kundvagn:</h2>
 
-
-<table class="table table-bordered table-striped">
-    <thead>
-        <tr>
-            <th>Maträtt</th>
-            <th class="text-right">Pris</th>
-            <th class="text-right">Ta bort</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var line in Model.Cart.Lines)
-        {
+@if (Model.Cart.Lines.Count() > 0)
+{
+    <table class="table table-bordered table-striped">
+        <thead>
             <tr>
-                <td class="text-left">
-                    @line.Dish.Name @line.CartLineId <a href=""><i class="fa fa-edit"></i></a>
-                    <select asp-for="Ingredients" class="form-control" asp-items="ingredients">
-                        <option selected="selected"></option>
-                    </select>
-                </td>
-                <td class="text-right">@line.Dish.Price.ToString("c")</td>
-                <td>
-                    <form asp-action="RemoveFromCart" asp-route-cartLineId="@line.CartLineId" method="post">
-                        <button type="submit" class="btn btn-sm btn-danger pull-right"><i class="fa fa-times"></i></button>
-                    </form>
-                </td>
+                <th>Maträtt</th>
+                <th class="text-right">Pris</th>
+                <th class="text-right">Ta bort</th>
             </tr>
-        }
-    </tbody>
-    <tfoot>
-        <tr>
-            <td class="text-right"><b>Totalt:</b></td>
-            <td class="text-right">
-                @Model.Cart.ComputeTotalValue().ToString("c")
-            </td>
-            <td></td>
-        </tr>
-    </tfoot>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var line in Model.Cart.Lines)
+            {
+                <tr>
+                    <td class="text-left">
+                        @line.Dish.Name @line.CartLineId <a href=""><i class="fa fa-edit"></i></a>
+                        <select asp-for="Ingredients" class="form-control" asp-items="ingredients">
+                            <option selected="selected"></option>
+                        </select>
+                    </td>
+                    <td class="text-right">@line.Dish.Price.ToString("c")</td>
+                    <td>
+                        <form asp-action="RemoveFromCart" asp-route-cartLineId="@line.CartLineId" method="post">
+                            <button type="submit" class="btn btn-sm btn-danger pull-right"><i class="fa fa-times"></i></button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <td class="text-right"><b>Totalt:</b></td>
+                <td class="text-right">
+                    @Model.Cart.ComputeTotalValue().ToString("c")
+                </td>
+                <td></td>
+            </tr>
+        </tfoot>
+    </table>
 
-<a asp-area="" asp-controller="Checkout" asp-action="Checkout" class="btn btn-default">Checka ut</a>
+    <a asp-area="" asp-controller="Checkout" asp-action="Checkout" class="btn btn-default">Checka ut</a>
+}
+else
+{
+    <h3>
+        Din kundvagn är tom
+    </h3>
+}
