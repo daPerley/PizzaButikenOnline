@@ -58,13 +58,13 @@ namespace PizzaButikenOnline.Controllers
             return RedirectToAction("Index", "Cart");
         }
 
-        public RedirectToActionResult ChangeIngredientsInCart(int cartLineId, ICollection<int> usedIngredientIds)
+        public RedirectToActionResult EditIngredientsInCart(int cartLineId, ICollection<int> ingredientIds)
         {
             var dish = _cart.Lines.FirstOrDefault(l => l.CartLineId == cartLineId);
 
             if (dish != null)
             {
-                _cart.EditItem(dish.CartLineId, usedIngredientIds);
+                _cart.EditItem(dish.CartLineId, ingredientIds);
             }
 
             return RedirectToAction("Index", "Cart");

@@ -11,6 +11,7 @@
         <thead>
             <tr>
                 <th>Maträtt</th>
+                <th>Ändra ingredienser</th>
                 <th class="text-right">Pris</th>
                 <th class="text-right">Ta bort</th>
             </tr>
@@ -20,10 +21,15 @@
             {
                 <tr>
                     <td class="text-left">
-                        @line.Dish.Name <a href=""><i class="fa fa-edit"></i></a>
-                        <select asp-for="@line.IngredientIds" class=" form-control" asp-items="ingredients">
-                            <option selected="selected"></option>
-                        </select>
+                        @line.Dish.Name
+                    </td>
+                    <td>
+                        <form asp-action="EditIngredientsInCart" asp-route-cartLineId="@line.CartLineId" method="post">
+                            <select name="ingredientIds" asp-for="@line.IngredientIds" class=" form-control" asp-items="ingredients">
+                                <option selected="selected"></option>
+                            </select>
+                            <button type="submit" class="btn btn-sm btn-danger center-block">Spara ändringar</button>
+                        </form>
                     </td>
                     <td class="text-right">@line.Dish.Price.ToString("c")</td>
                     <td>
@@ -36,7 +42,7 @@
         </tbody>
         <tfoot>
             <tr>
-                <td class="text-right"><b>Totalt:</b></td>
+                <td colspan="2" class="text-right"><b>Totalt:</b></td>
                 <td class="text-right">
                     @Model.Cart.ComputeTotalValue().ToString("c")
                 </td>

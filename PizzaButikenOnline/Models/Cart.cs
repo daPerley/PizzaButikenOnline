@@ -21,6 +21,8 @@ namespace PizzaButikenOnline.Models
         {
             var cartLine = lineCollection.FirstOrDefault(l => l.CartLineId == cartLineId);
 
+            cartLine.IngredientIds.Clear();
+
             foreach (var id in ingredientIds)
             {
                 cartLine.IngredientIds.Add(id);
