@@ -22,7 +22,8 @@ namespace PizzaButikenOnline.Controllers
         {
             return View(new CartIndexViewModel
             {
-                Cart = _cart
+                Cart = _cart,
+                Ingredients = _context.Ingredients.ToList()
             });
         }
 

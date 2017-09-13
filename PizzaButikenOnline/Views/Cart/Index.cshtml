@@ -1,6 +1,7 @@
 ﻿@model PizzaButikenOnline.Models.CartViewModels.CartIndexViewModel
 @{
     ViewData["Title"] = "Kundvagn";
+    var ingredients = new SelectList(Model.Ingredients, "Id", "Name");
 }
 <h2>Kundvagn:</h2>
 
@@ -10,19 +11,23 @@
         <tr>
             <th>Maträtt</th>
             <th class="text-right">Pris</th>
-            <th class="text-right">Ändra</th>
+            <th class="text-right">Ta bort</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var line in Model.Cart.Lines)
         {
             <tr>
-                <td class="text-left">@line.Dish.Name</td>
+                <td class="text-left">
+                    @line.Dish.Name @line.CartLineId <a href=""><i class="fa fa-edit"></i></a>
+                    <select asp-for="Ingredients" class="form-control" asp-items="ingredients">
+                        <option selected="selected"></option>
+                    </select>
+                </td>
                 <td class="text-right">@line.Dish.Price.ToString("c")</td>
                 <td>
-                    <form asp-action="RemoveFromCart" method="post">
-                        <input type="hidden" name="DishID" value="@line.Dish.Id" />
-                        <button type="submit" class="btn btn-sm btn-danger pull-right">Ta bort</button>
+                    <form asp-action="RemoveFromCart" asp-route-cartLineId="@line.CartLineId" method="post">
+                        <button type="submit" class="btn btn-sm btn-danger pull-right"><i class="fa fa-times"></i></button>
                     </form>
                 </td>
             </tr>

@@ -5,7 +5,7 @@
     <input type="hidden" asp-for="Id" />
     <row>
         <div class="col-sm-8"><span class="text-uppercase">@Model.Name</span></div>
-        <div class="col-sm-4"><button type="submit" class="btn btn-success btn-sm pull-right">@Model.Price:-</button></div>
+        <div class="col-sm-4"><button type="submit" class="btn btn-success btn-sm pull-right">@Model.Price.ToString("c")</button></div>
     </row>
     <row>
         <div class="col-sm-12">

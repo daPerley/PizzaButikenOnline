@@ -11,6 +11,7 @@ namespace PizzaButikenOnline.Models
         {
             lineCollection.Add(new CartLine
             {
+                CartLineId = lineCollection.Count + 1,
                 Dish = dish
             });
         }
@@ -21,7 +22,7 @@ namespace PizzaButikenOnline.Models
         }
 
         public virtual void RemoveLine(int cartLineId) =>
-           lineCollection.FirstOrDefault(l => l.CartLineId == cartLineId);
+           lineCollection.RemoveAll(l => l.CartLineId == cartLineId);
 
         public virtual decimal ComputeTotalValue() =>
             lineCollection.Sum(l => l.Dish.Price);
