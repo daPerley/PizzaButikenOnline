@@ -7,12 +7,13 @@ namespace PizzaButikenOnline.Models
     {
         private List<CartLine> lineCollection = new List<CartLine>();
 
-        public virtual void AddItem(Dish dish)
+        public virtual void AddItem(Dish dish, ICollection<int> ingredientIds)
         {
             lineCollection.Add(new CartLine
             {
                 CartLineId = lineCollection.Count + 1,
-                Dish = dish
+                Dish = dish,
+                IngredientIds = ingredientIds
             });
         }
 

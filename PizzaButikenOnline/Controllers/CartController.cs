@@ -30,12 +30,17 @@ namespace PizzaButikenOnline.Controllers
         [HttpPost]
         public IActionResult AddToCart(int id)
         {
-            // TODO: Figure why this get "self referencing" error when including ingredients when non of the other controllers do...
-            var dish = _context.Dishes.FirstOrDefault(d => d.Id == id);
+            var dish = _context.Dishes
+                .FirstOrDefault(d => d.Id == id);
+
+            var ingredientIds = _context.IngredientDishes
+                .Where(i => i.DishId == id)
+                .Select(i => i.IngredientId)
+                .ToList();
 
             if (dish != null)
             {
-                _cart.AddItem(dish);
+                _cart.AddItem(dish, ingredientIds);
             }
 
             return PartialView("Components/CartSummary/Default", _cart);
