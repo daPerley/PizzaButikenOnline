@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using PizzaButikenOnline.Data;
 using PizzaButikenOnline.Models;
 using PizzaButikenOnline.Models.CartViewModels;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace PizzaButikenOnline.Controllers
@@ -30,7 +30,8 @@ namespace PizzaButikenOnline.Controllers
         [HttpPost]
         public IActionResult AddToCart(int id)
         {
-            var dish = _context.Dishes.Include(d => d.Ingredients).FirstOrDefault(d => d.Id == id);
+            // TODO: Figure why this get "self referencing" error when including ingredients when non of the other controllers do...
+            var dish = _context.Dishes.FirstOrDefault(d => d.Id == id);
 
             if (dish != null)
             {
@@ -47,6 +48,18 @@ namespace PizzaButikenOnline.Controllers
             if (dish != null)
             {
                 _cart.RemoveLine(dish.CartLineId);
+            }
+
+            return RedirectToAction("Index", "Cart");
+        }
+
+        public RedirectToActionResult ChangeIngredientsInCart(int cartLineId, ICollection<int> usedIngredientIds)
+        {
+            var dish = _cart.Lines.FirstOrDefault(l => l.CartLineId == cartLineId);
+
+            if (dish != null)
+            {
+                _cart.EditItem(dish.CartLineId, usedIngredientIds);
             }
 
             return RedirectToAction("Index", "Cart");

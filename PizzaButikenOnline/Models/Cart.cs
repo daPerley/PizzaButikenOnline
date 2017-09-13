@@ -16,9 +16,14 @@ namespace PizzaButikenOnline.Models
             });
         }
 
-        public virtual void EditItem(int cartLineId, Dish dish)
+        public virtual void EditItem(int cartLineId, ICollection<int> ingredientIds)
         {
-            // TODO: Add logic to change ingredients here
+            var cartLine = lineCollection.FirstOrDefault(l => l.CartLineId == cartLineId);
+
+            foreach (var id in ingredientIds)
+            {
+                cartLine.IngredientIds.Add(id);
+            }
         }
 
         public virtual void RemoveLine(int cartLineId) =>
@@ -39,7 +44,7 @@ namespace PizzaButikenOnline.Models
         public int CartLineId { get; set; }
         public Dish Dish { get; set; }
 
-        public ICollection<int> IngredientId { get; set; }
+        public ICollection<int> IngredientIds { get; set; }
         public virtual ICollection<Ingredient> Ingredients { get; set; }
     }
 }

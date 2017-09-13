@@ -20,8 +20,8 @@
             {
                 <tr>
                     <td class="text-left">
-                        @line.Dish.Name @line.CartLineId <a href=""><i class="fa fa-edit"></i></a>
-                        <select asp-for="Ingredients" class="form-control" asp-items="ingredients">
+                        @line.Dish.Name <a href=""><i class="fa fa-edit"></i></a>
+                        <select asp-for="@line.IngredientIds" class=" form-control" asp-items="ingredients">
                             <option selected="selected"></option>
                         </select>
                     </td>
