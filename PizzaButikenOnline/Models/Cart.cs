@@ -13,11 +13,12 @@ namespace PizzaButikenOnline.Models
             {
                 CartLineId = lineCollection.Count + 1,
                 Dish = dish,
-                IngredientIds = ingredientIds
+                IngredientIds = ingredientIds,
+                BaseIngredientIds = ingredientIds
             });
         }
 
-        public virtual void EditItem(int cartLineId, ICollection<int> ingredientIds)
+        public virtual void EditItem(int cartLineId, ICollection<int> ingredientIds, int extraCost)
         {
             var cartLine = lineCollection.FirstOrDefault(l => l.CartLineId == cartLineId);
 
@@ -27,13 +28,23 @@ namespace PizzaButikenOnline.Models
             {
                 cartLine.IngredientIds.Add(id);
             }
+
+            cartLine.ExtraCost = extraCost;
         }
 
         public virtual void RemoveLine(int cartLineId) =>
            lineCollection.RemoveAll(l => l.CartLineId == cartLineId);
 
-        public virtual decimal ComputeTotalValue() =>
-            lineCollection.Sum(l => l.Dish.Price);
+        public virtual decimal ComputeTotalValue()
+        {
+            var basePrice = lineCollection.Sum(l => l.Dish.Price);
+
+            var extraPrice = lineCollection.Sum(l => l.ExtraCost);
+
+            var totalPrice = basePrice + extraPrice;
+
+            return totalPrice;
+        }
 
         // TODO: Add logic that count price of extra ingredients here
 
@@ -48,6 +59,8 @@ namespace PizzaButikenOnline.Models
         public Dish Dish { get; set; }
 
         public ICollection<int> IngredientIds { get; set; }
+        public ICollection<int> BaseIngredientIds { get; set; }
+        public int ExtraCost { get; set; }
         public virtual ICollection<Ingredient> Ingredients { get; set; }
     }
 }
