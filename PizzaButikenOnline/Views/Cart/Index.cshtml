@@ -32,8 +32,12 @@
                         </form>
                     </td>
                     <td class="text-right">
-                        @line.Dish.Price.ToString("c")<br />
-                        Tillagda ingredienser: @line.ExtraCost.ToString("c")
+                        @line.Dish.Price.ToString("c")<br /><br />
+                        @if (line.ExtraCost > 0)
+                        {
+                            <p>Tillagda ingredienser:</p>
+                            @line.ExtraCost.ToString("c")
+                        }
                     </td>
                     <td>
                         <form asp-action="RemoveFromCart" asp-route-cartLineId="@line.CartLineId" method="post">
