@@ -31,7 +31,10 @@
                             <button type="submit" class="btn btn-sm btn-danger center-block">Spara ändringar</button>
                         </form>
                     </td>
-                    <td class="text-right">@line.Dish.Price.ToString("c")</td>
+                    <td class="text-right">
+                        @line.Dish.Price.ToString("c")<br />
+                        Tillagda ingredienser: @line.ExtraCost.ToString("c")
+                    </td>
                     <td>
                         <form asp-action="RemoveFromCart" asp-route-cartLineId="@line.CartLineId" method="post">
                             <button type="submit" class="btn btn-sm btn-danger pull-right"><i class="fa fa-times"></i></button>
