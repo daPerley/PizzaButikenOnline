@@ -35,6 +35,7 @@ namespace PizzaButikenOnline
             services.AddTransient<IRepository<Dish>, DishRepository>();
             services.AddTransient<IDishService, DishService>();
             services.AddTransient<IRepository<Ingredient>, IngredientRepository>();
+            services.AddTransient<IRepository<Category>, CategoryRepository>();
             services.AddTransient<UserManager<ApplicationUser>>();
             services.AddScoped(SessionCart.GetCart);
             services.AddMemoryCache();

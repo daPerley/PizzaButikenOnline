@@ -2,23 +2,24 @@
 using Microsoft.EntityFrameworkCore;
 using PizzaButikenOnline.Data;
 using PizzaButikenOnline.Models;
-using System.Linq;
-using System.Threading.Tasks;
+using PizzaButikenOnline.Repositories;
 
 namespace PizzaButikenOnline.Controllers
 {
     public class CategoriesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IRepository<Category> _categoryRepository;
 
-        public CategoriesController(ApplicationDbContext context)
+        public CategoriesController(ApplicationDbContext context, IRepository<Category> categoryRepository)
         {
             _context = context;
+            _categoryRepository = categoryRepository;
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            return View(await _context.Categories.ToListAsync());
+            return View(_categoryRepository.List());
         }
 
         public IActionResult Create()
@@ -28,25 +29,19 @@ namespace PizzaButikenOnline.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name")] Category category)
+        public IActionResult Create([Bind("Id,Name")] Category category)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(category);
-                await _context.SaveChangesAsync();
+                _categoryRepository.Create(category);
                 return RedirectToAction(nameof(Index));
             }
             return View(category);
         }
 
-        public async Task<IActionResult> Edit(int? id)
+        public IActionResult Edit(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var category = await _context.Categories.SingleOrDefaultAsync(m => m.Id == id);
+            var category = _categoryRepository.Get(id);
             if (category == null)
             {
                 return NotFound();
@@ -56,7 +51,7 @@ namespace PizzaButikenOnline.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Category category)
+        public IActionResult Edit(int id, [Bind("Id,Name")] Category category)
         {
             if (id != category.Id)
             {
@@ -68,7 +63,7 @@ namespace PizzaButikenOnline.Controllers
                 try
                 {
                     _context.Update(category);
-                    await _context.SaveChangesAsync();
+                    _categoryRepository.SaveChanges();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -86,15 +81,9 @@ namespace PizzaButikenOnline.Controllers
             return View(category);
         }
 
-        public async Task<IActionResult> Delete(int? id)
+        public IActionResult Delete(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var category = await _context.Categories
-                .SingleOrDefaultAsync(m => m.Id == id);
+            var category = _categoryRepository.Get(id);
             if (category == null)
             {
                 return NotFound();
@@ -105,17 +94,25 @@ namespace PizzaButikenOnline.Controllers
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public IActionResult DeleteConfirmed(int id)
         {
-            var category = await _context.Categories.SingleOrDefaultAsync(m => m.Id == id);
-            _context.Categories.Remove(category);
-            await _context.SaveChangesAsync();
+            _categoryRepository.Delete(id);
             return RedirectToAction(nameof(Index));
         }
 
         private bool CategoryExists(int id)
         {
-            return _context.Categories.Any(e => e.Id == id);
+            try
+            {
+                _categoryRepository.Get(id);
+            }
+            catch (System.Exception)
+            {
+
+                return false;
+            }
+
+            return true;
         }
     }
 }
