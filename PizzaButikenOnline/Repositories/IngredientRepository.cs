@@ -32,10 +32,17 @@ namespace PizzaButikenOnline.Repositories
 
         public bool Delete(int id)
         {
-            // TODO: Remove relations as well
-
             try
             {
+                var ingredientInDish = _context.IngredientDishes.Where(i => i.IngredientId == id).ToList();
+
+                foreach (var item in ingredientInDish)
+                {
+                    _context.IngredientDishes.Remove(item);
+                }
+
+                SaveChanges();
+
                 _context.Ingredients.Remove(Get(id));
 
                 SaveChanges();
@@ -51,7 +58,7 @@ namespace PizzaButikenOnline.Repositories
 
         public Ingredient Get(int id)
         {
-            return _context.Ingredients.FirstOrDefault(d => d.Id == id);
+            return _context.Ingredients.FirstOrDefault(i => i.Id == id);
         }
 
         public IQueryable<Ingredient> List()

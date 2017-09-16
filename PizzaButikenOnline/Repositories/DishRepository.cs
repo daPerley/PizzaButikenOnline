@@ -33,10 +33,17 @@ namespace PizzaButikenOnline.Repositories
 
         public bool Delete(int id)
         {
-            // TODO: Remove relations as well
-
             try
             {
+                var ingredientInDish = _context.IngredientDishes.Where(i => i.DishId == id).ToList();
+
+                foreach (var item in ingredientInDish)
+                {
+                    _context.IngredientDishes.Remove(item);
+                }
+
+                SaveChanges();
+
                 _context.Dishes.Remove(Get(id));
 
                 SaveChanges();

@@ -32,7 +32,6 @@ namespace PizzaButikenOnline.Services
                 _dishRepository.Create(dish);
                 _dishRepository.SaveChanges();
 
-                // TODO: Replace this with ingredient repository later
                 foreach (var i in viewModel.UsedIngredientIds)
                 {
                     var id = new IngredientDish
@@ -64,7 +63,6 @@ namespace PizzaButikenOnline.Services
                 dish.Price = viewModel.Price;
                 dish.Description = viewModel.Description;
 
-                // TODO : Replace when categoryRepsoitory is created 
                 dish.Category = _context.Categories.First(c => c.Id == viewModel.CategoryId);
 
                 _context.Dishes.Update(dish);
