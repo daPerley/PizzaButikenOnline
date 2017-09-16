@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using PizzaButikenOnline.Data;
 using PizzaButikenOnline.Models;
+using PizzaButikenOnline.Repositories;
 using PizzaButikenOnline.Services;
 
 namespace PizzaButikenOnline
@@ -31,6 +32,8 @@ namespace PizzaButikenOnline
 
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
+            services.AddTransient<IRepository<Dish>, DishRepository>();
+            services.AddTransient<IDishService, DishService>();
             services.AddTransient<UserManager<ApplicationUser>>();
             services.AddScoped(SessionCart.GetCart);
             services.AddMemoryCache();

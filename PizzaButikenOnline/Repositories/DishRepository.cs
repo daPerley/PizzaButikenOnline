@@ -1,4 +1,5 @@
-﻿using PizzaButikenOnline.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using PizzaButikenOnline.Data;
 using PizzaButikenOnline.Models;
 using System.Linq;
 
@@ -50,12 +51,20 @@ namespace PizzaButikenOnline.Repositories
         public Dish Get(int id)
         {
 
-            return _context.Dishes.FirstOrDefault(d => d.Id == id);
+            return _context.Dishes
+                                .Include(d => d.IngredientDish)
+                                .ThenInclude(ind => ind.Ingredient)
+                                .Include(d => d.Category)
+                                .FirstOrDefault(d => d.Id == id); ;
         }
 
         public IQueryable<Dish> List()
         {
-            return _context.Dishes.AsQueryable();
+            return _context.Dishes
+                .Include(d => d.IngredientDish)
+                .ThenInclude(id => id.Ingredient)
+                .Include(d => d.Category)
+                .AsQueryable();
         }
 
         public bool SaveChanges()

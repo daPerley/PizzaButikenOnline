@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using PizzaButikenOnline.Data;
 using PizzaButikenOnline.Models;
 using PizzaButikenOnline.Models.DishViewModels;
+using PizzaButikenOnline.Repositories;
+using PizzaButikenOnline.Services;
 using System.Linq;
 
 namespace PizzaButikenOnline.Controllers
@@ -13,21 +14,19 @@ namespace PizzaButikenOnline.Controllers
     public class DishController : Controller
     {
         private ApplicationDbContext _context;
+        private IDishService _dishService;
+        private IRepository<Dish> _dishRepository;
 
-        public DishController(ApplicationDbContext context)
+        public DishController(ApplicationDbContext context, IDishService dishService, IRepository<Dish> dishRepository)
         {
             _context = context;
+            _dishService = dishService;
+            _dishRepository = dishRepository;
         }
 
         public ActionResult Index()
         {
-            var dishes = _context.Dishes
-                .Include(d => d.IngredientDish)
-                .ThenInclude(id => id.Ingredient)
-                .Include(d => d.Category)
-                .ToList();
-
-            return View(dishes);
+            return View(_dishRepository.List());
         }
 
         public ActionResult Create()
@@ -53,28 +52,7 @@ namespace PizzaButikenOnline.Controllers
                     return View("Create", viewModel);
                 }
 
-                var dish = new Dish
-                {
-                    Name = viewModel.Name,
-                    Price = viewModel.Price,
-                    Description = viewModel.Description,
-                    CategoryId = _context.Categories.First(c => c.Id == viewModel.CategoryId).Id
-                };
-
-                _context.Dishes.Add(dish);
-                _context.SaveChanges();
-
-                foreach (var i in viewModel.UsedIngredientIds)
-                {
-                    var id = new IngredientDish
-                    {
-                        DishId = dish.Id,
-                        IngredientId = i
-                    };
-
-                    _context.IngredientDishes.Add(id);
-                    _context.SaveChanges();
-                }
+                _dishService.AddDish(viewModel);
 
                 return RedirectToAction("Index", "Dish");
             }
@@ -87,20 +65,14 @@ namespace PizzaButikenOnline.Controllers
         // GET: Dish/Edit/5
         public ActionResult Edit(int id)
         {
-            // TODO: Send a create dish viewmodel with the view instead of id
-
-            var dish = _context.Dishes
-                .Include(d => d.IngredientDish)
-                .ThenInclude(ind => ind.Ingredient)
-                .Include(d => d.Category)
-                .FirstOrDefault(d => d.Id == id);
+            var dish = _dishRepository.Get(id);
 
             var viewModel = new DishViewModel
             {
                 Name = dish.Name,
                 Price = dish.Price,
                 Description = dish.Description,
-                Ingredients = _context.Ingredients.ToList(), // TODO: Make sure that this adds both all ingredients as well as the dishs ingredients
+                Ingredients = _context.Ingredients.ToList(),
                 UsedIngredientIds = dish.IngredientDish.Select(i => i.IngredientId).ToList(),
                 CategoryId = dish.CategoryId,
                 Categories = _context.Categories.ToList()
@@ -118,46 +90,13 @@ namespace PizzaButikenOnline.Controllers
 
             try
             {
-                var dish = _context.Dishes
-                .Include(d => d.IngredientDish)
-                .ThenInclude(ind => ind.Ingredient)
-                .Include(d => d.Category)
-                .FirstOrDefault(d => d.Id == id);
-
-                dish.Name = viewModel.Name;
-                dish.Price = viewModel.Price;
-                dish.Description = viewModel.Description;
-                dish.Category = _context.Categories.First(c => c.Id == viewModel.CategoryId);
-
-                _context.Dishes.Update(dish);
-                _context.SaveChanges();
-
-                if (dish.IngredientDish.Select(ind => ind.IngredientId) != viewModel.UsedIngredientIds)
-                {
-                    var oldRel = _context.IngredientDishes.Where(ind => ind.DishId == dish.Id).ToList();
-
-                    _context.IngredientDishes.RemoveRange(oldRel);
-                    _context.SaveChanges();
-
-                    foreach (var i in viewModel.UsedIngredientIds)
-                    {
-                        var newRel = new IngredientDish
-                        {
-                            DishId = dish.Id,
-                            IngredientId = i
-                        };
-
-                        _context.IngredientDishes.Add(newRel);
-                    }
-
-                    _context.SaveChanges();
-                }
+                _dishService.EditDish(id, viewModel);
 
                 return RedirectToAction(nameof(Index));
             }
             catch
             {
-                return View(_context.Dishes.FirstOrDefault(x => x.Id == id));
+                return View(_dishRepository.Get(id));
             }
         }
 
@@ -174,10 +113,7 @@ namespace PizzaButikenOnline.Controllers
 
             try
             {
-                var dish = _context.Dishes.FirstOrDefault(d => d.Id == id);
-
-                _context.Dishes.Remove(dish);
-                _context.SaveChanges();
+                _dishRepository.Delete(id);
 
                 return RedirectToAction(nameof(Index));
             }
