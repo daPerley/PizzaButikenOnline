@@ -1,24 +1,23 @@
-﻿using Microsoft.EntityFrameworkCore;
-using PizzaButikenOnline.Data;
+﻿using PizzaButikenOnline.Data;
 using PizzaButikenOnline.Models;
 using System.Linq;
 
 namespace PizzaButikenOnline.Repositories
 {
-    public class DishRepository : IRepository<Dish>
+    public class IngredientRepository : IRepository<Ingredient>
     {
         private ApplicationDbContext _context;
 
-        public DishRepository(ApplicationDbContext context)
+        public IngredientRepository(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        public bool Create(Dish item)
+        public bool Create(Ingredient item)
         {
             try
             {
-                _context.Dishes.Add(item);
+                _context.Ingredients.Add(item);
 
                 SaveChanges();
             }
@@ -37,7 +36,7 @@ namespace PizzaButikenOnline.Repositories
 
             try
             {
-                _context.Dishes.Remove(Get(id));
+                _context.Ingredients.Remove(Get(id));
 
                 SaveChanges();
             }
@@ -50,22 +49,14 @@ namespace PizzaButikenOnline.Repositories
             return true;
         }
 
-        public Dish Get(int id)
+        public Ingredient Get(int id)
         {
-            return _context.Dishes
-                                .Include(d => d.IngredientDish)
-                                .ThenInclude(ind => ind.Ingredient)
-                                .Include(d => d.Category)
-                                .FirstOrDefault(d => d.Id == id);
+            return _context.Ingredients.FirstOrDefault(d => d.Id == id);
         }
 
-        public IQueryable<Dish> List()
+        public IQueryable<Ingredient> List()
         {
-            return _context.Dishes
-                .Include(d => d.IngredientDish)
-                .ThenInclude(id => id.Ingredient)
-                .Include(d => d.Category)
-                .AsQueryable();
+            return _context.Ingredients.AsQueryable();
         }
 
         public bool SaveChanges()

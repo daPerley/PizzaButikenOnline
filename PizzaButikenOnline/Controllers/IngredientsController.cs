@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using PizzaButikenOnline.Data;
 using PizzaButikenOnline.Models;
+using PizzaButikenOnline.Repositories;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -10,10 +11,12 @@ namespace PizzaButikenOnline.Controllers
     public class IngredientsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IRepository<Ingredient> _ingredientRepository;
 
-        public IngredientsController(ApplicationDbContext context)
+        public IngredientsController(ApplicationDbContext context, IRepository<Ingredient> ingredientRepository)
         {
             _context = context;
+            _ingredientRepository = ingredientRepository;
         }
 
         // GET: Ingredients
