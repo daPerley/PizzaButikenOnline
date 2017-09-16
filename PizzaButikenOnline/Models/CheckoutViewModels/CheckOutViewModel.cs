@@ -1,4 +1,5 @@
 ﻿using PizzaButikenOnline.Models.PaymentViewModels;
+using System.Collections.Generic;
 
 namespace PizzaButikenOnline.Models.CheckOutViewModel
 {
@@ -9,5 +10,7 @@ namespace PizzaButikenOnline.Models.CheckOutViewModel
         public string Street { get; set; }
         public string City { get; set; }
         public PaymentViewModel Payment { get; set; }
+
+        public IEnumerable<PaymentViewModel> PaymentOptions { get; set; }
     }
 }

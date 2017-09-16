@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using PizzaButikenOnline.Data;
 using PizzaButikenOnline.Models;
 using PizzaButikenOnline.Models.CheckOutViewModel;
+using PizzaButikenOnline.Models.PaymentViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +26,18 @@ namespace PizzaButikenOnline.Controllers
         public IActionResult Checkout()
         {
             var checkout = new CheckoutViewModel();
+
+            checkout.PaymentOptions = new List<PaymentViewModel>
+            {
+                 new PaymentViewModel{
+                    Id =1,
+                    PaymentMethod ="Kort"
+                },
+                new PaymentViewModel{
+                    Id =1,
+                    PaymentMethod ="Kontant"
+                }
+            };
 
             if (User.Identity.IsAuthenticated)
             {
