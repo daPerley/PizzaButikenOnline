@@ -46,8 +46,6 @@ namespace PizzaButikenOnline.Models
             return totalPrice;
         }
 
-        // TODO: Add logic that count price of extra ingredients here
-
         public virtual void Clear() => lineCollection.Clear();
 
         public virtual IEnumerable<CartLine> Lines => lineCollection;

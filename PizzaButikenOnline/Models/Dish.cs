@@ -9,6 +9,7 @@ namespace PizzaButikenOnline.Models
         public int Id { get; set; }
 
         [Required, Display(Name = "Rätt")]
+        [StringLength(30, MinimumLength = 3, ErrorMessage = "Minst tre tecken krävs, max 30 tecken.")]
         public string Name { get; set; }
 
         [Required, Display(Name = "Pris")]
