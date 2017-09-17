@@ -4,6 +4,7 @@ using PizzaButikenOnline.Data;
 using PizzaButikenOnline.Models;
 using PizzaButikenOnline.Models.CheckOutViewModel;
 using PizzaButikenOnline.Models.PaymentViewModels;
+using PizzaButikenOnline.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,12 +16,14 @@ namespace PizzaButikenOnline.Controllers
         private readonly ApplicationDbContext _context;
         private readonly Cart _cart;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly ICheckoutService _checkoutService;
 
-        public CheckoutController(ApplicationDbContext context, Cart cart, UserManager<ApplicationUser> userManager)
+        public CheckoutController(ApplicationDbContext context, Cart cart, UserManager<ApplicationUser> userManager, ICheckoutService checkoutService)
         {
             _context = context;
             _cart = cart;
             _userManager = userManager;
+            _checkoutService = checkoutService;
         }
 
         public IActionResult Checkout()
@@ -29,13 +32,13 @@ namespace PizzaButikenOnline.Controllers
             {
                 PaymentOptions = new List<PaymentViewModel>
             {
-                 new PaymentViewModel{
-                    Id =1,
-                    PaymentMethod ="Kort"
-                },
                 new PaymentViewModel{
                     Id =1,
                     PaymentMethod ="Kontant"
+                },
+                new PaymentViewModel{
+                    Id =2,
+                    PaymentMethod ="Kort"
                 }
             }
             };
@@ -62,6 +65,13 @@ namespace PizzaButikenOnline.Controllers
         [HttpPost]
         public IActionResult Checkout(CheckoutViewModel checkoutViewModel)
         {
+            if (checkoutViewModel.Payment.Id == 2)
+            {
+                // Redirect to card payment here
+            }
+
+            //var order = _checkoutService.CompleteCheckout(checkoutViewModel);
+
             var order = new Order
             {
                 OrderDishes = new List<OrderDish>(),
@@ -106,6 +116,11 @@ namespace PizzaButikenOnline.Controllers
             _context.SaveChanges();
 
             return RedirectToAction("CheckoutCompleted", order);
+        }
+
+        public IActionResult PayWithCard()
+        {
+            return View();
         }
 
         public IActionResult CheckoutCompleted(Order order)

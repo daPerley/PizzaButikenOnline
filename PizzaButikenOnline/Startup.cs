@@ -13,9 +13,12 @@ namespace PizzaButikenOnline
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        private IHostingEnvironment _environment;
+
+        public Startup(IConfiguration configuration, IHostingEnvironment environment)
         {
             Configuration = configuration;
+            _environment = environment;
         }
 
         public IConfiguration Configuration { get; }
@@ -23,6 +26,13 @@ namespace PizzaButikenOnline
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            if (_environment.IsProduction() || _environment.IsStaging())
+                services.AddDbContext<ApplicationDbContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            else
+                services.AddDbContext<ApplicationDbContext>(options =>
+                    options.UseInMemoryDatabase("DefaultConnection"));
+
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseInMemoryDatabase(("DefaultConnection")));
 
@@ -36,6 +46,7 @@ namespace PizzaButikenOnline
             services.AddTransient<IDishService, DishService>();
             services.AddTransient<IRepository<Ingredient>, IngredientRepository>();
             services.AddTransient<IRepository<Category>, CategoryRepository>();
+            services.AddTransient<ICheckoutService, CheckoutService>();
             services.AddTransient<UserManager<ApplicationUser>>();
             services.AddScoped(SessionCart.GetCart);
             services.AddMemoryCache();
@@ -68,6 +79,9 @@ namespace PizzaButikenOnline
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            if (_environment.IsProduction() || _environment.IsStaging())
+                context.Database.Migrate();
 
             DBInitializer.Initialize(context, userManager, roleManager);
         }
