@@ -25,9 +25,9 @@ namespace PizzaButikenOnline.Controllers
 
         public IActionResult Checkout()
         {
-            var checkout = new CheckoutViewModel();
-
-            checkout.PaymentOptions = new List<PaymentViewModel>
+            var checkout = new CheckoutViewModel
+            {
+                PaymentOptions = new List<PaymentViewModel>
             {
                  new PaymentViewModel{
                     Id =1,
@@ -37,6 +37,7 @@ namespace PizzaButikenOnline.Controllers
                     Id =1,
                     PaymentMethod ="Kontant"
                 }
+            }
             };
 
             if (User.Identity.IsAuthenticated)
