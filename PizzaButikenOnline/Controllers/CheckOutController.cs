@@ -28,16 +28,16 @@ namespace PizzaButikenOnline.Controllers
             var checkout = new CheckoutViewModel
             {
                 PaymentOptions = new List<PaymentViewModel>
-            {
-                new PaymentViewModel{
-                    Id =1,
-                    PaymentMethod ="Kontant"
-                },
-                new PaymentViewModel{
-                    Id =2,
-                    PaymentMethod ="Kort"
+                {
+                    new PaymentViewModel{
+                        Id =1,
+                        PaymentMethod ="Kontant"
+                    },
+                    new PaymentViewModel{
+                        Id =2,
+                        PaymentMethod ="Kort"
+                    }
                 }
-            }
             };
 
             if (User.Identity.IsAuthenticated)
@@ -62,6 +62,22 @@ namespace PizzaButikenOnline.Controllers
         [HttpPost]
         public IActionResult Checkout(CheckoutViewModel checkoutViewModel)
         {
+            if (!ModelState.IsValid)
+            {
+                checkoutViewModel.PaymentOptions = new List<PaymentViewModel>
+                {
+                    new PaymentViewModel{
+                        Id =1,
+                        PaymentMethod ="Kontant"
+                    },
+                    new PaymentViewModel{
+                        Id =2,
+                        PaymentMethod ="Kort"
+                    }
+                };
+                return View(nameof(Checkout), checkoutViewModel);
+            }
+
             var order = new Order
             {
                 OrderDishes = new List<OrderDish>(),
@@ -91,9 +107,9 @@ namespace PizzaButikenOnline.Controllers
                     {
                         DishId = line.Dish.Id,
                         OrderId = order.Id,
-                        EditedIngredients = line.Dish.Ingredients.Select(i => new IngredientOrderDish
+                        EditedIngredients = line.IngredientIds.Select(i => new IngredientOrderDish
                         {
-                            IngredientId = i.Id,
+                            IngredientId = i,
                             OrderDishId = line.Dish.Id
                         }).ToList()
                     };
@@ -105,7 +121,7 @@ namespace PizzaButikenOnline.Controllers
             _context.Orders.Add(order);
             _context.SaveChanges();
 
-            return RedirectToAction("CheckoutCompleted", order);
+            return RedirectToAction(nameof(CheckoutCompleted), order);
         }
 
         public IActionResult CheckoutCompleted(Order order)

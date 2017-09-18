@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.AzureAppServices;
 using PizzaButikenOnline.Data;
 using PizzaButikenOnline.Models;
 using PizzaButikenOnline.Repositories;
@@ -14,11 +16,13 @@ namespace PizzaButikenOnline
     public class Startup
     {
         private IHostingEnvironment _environment;
+        private ILoggerFactory _loggerFactory;
 
-        public Startup(IConfiguration configuration, IHostingEnvironment environment)
+        public Startup(IConfiguration configuration, IHostingEnvironment environment, ILoggerFactory loggerFactory)
         {
             Configuration = configuration;
             _environment = environment;
+            _loggerFactory = loggerFactory;
         }
 
         public IConfiguration Configuration { get; }
@@ -57,6 +61,13 @@ namespace PizzaButikenOnline
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, UserManager<ApplicationUser> userManager, ApplicationDbContext context, RoleManager<IdentityRole> roleManager)
         {
+            if (env.IsProduction())
+                _loggerFactory.AddAzureWebAppDiagnostics(
+                 new AzureAppServicesDiagnosticsSettings
+                 {
+                     OutputTemplate = "{Timestamp:yyyy-MM-dd HH:mm:ss zzz} [{Level}] {RequestId}-{SourceContext}: {Message}{NewLine}{Exception}"
+                 });
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

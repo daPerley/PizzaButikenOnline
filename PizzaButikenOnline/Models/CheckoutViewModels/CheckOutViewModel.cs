@@ -15,7 +15,7 @@ namespace PizzaButikenOnline.Models.CheckOutViewModel
         [Required, Display(Name = "Postort")]
         public string City { get; set; }
         [Required, Display(Name = "Betalningssätt")]
-        public PaymentViewModel Payment { get; set; }
+        public int PaymentId { get; set; }
 
         public IEnumerable<PaymentViewModel> PaymentOptions { get; set; }
     }
