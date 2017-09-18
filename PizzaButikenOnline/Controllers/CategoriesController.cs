@@ -1,19 +1,16 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using PizzaButikenOnline.Data;
 using PizzaButikenOnline.Models;
 using PizzaButikenOnline.Repositories;
+using System;
 
 namespace PizzaButikenOnline.Controllers
 {
     public class CategoriesController : Controller
     {
-        private readonly ApplicationDbContext _context;
         private readonly IRepository<Category> _categoryRepository;
 
-        public CategoriesController(ApplicationDbContext context, IRepository<Category> categoryRepository)
+        public CategoriesController(IRepository<Category> categoryRepository)
         {
-            _context = context;
             _categoryRepository = categoryRepository;
         }
 
@@ -51,34 +48,26 @@ namespace PizzaButikenOnline.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, [Bind("Id,Name")] Category category)
+        public IActionResult Edit(int id, [Bind("Id,Name")] Category model)
         {
-            if (id != category.Id)
-            {
-                return NotFound();
-            }
+            if (!ModelState.IsValid)
+                return View(model);
 
-            if (ModelState.IsValid)
+            try
             {
-                try
-                {
-                    _context.Update(category);
-                    _categoryRepository.SaveChanges();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!CategoryExists(category.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                var category = _categoryRepository.Get(model.Id);
+
+                if (category == null)
+                    return NotFound();
+
+                category.Name = model.Name;
+                _categoryRepository.SaveChanges();
             }
-            return View(category);
+            catch (Exception ex)
+            {
+                //TODO: Log ex
+            }
+            return RedirectToAction(nameof(Index));
         }
 
         public IActionResult Delete(int id)
