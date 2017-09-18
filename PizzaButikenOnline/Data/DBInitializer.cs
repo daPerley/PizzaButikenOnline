@@ -11,48 +11,53 @@ namespace PizzaButikenOnline.Data
         public static void Initialize(ApplicationDbContext context, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             /* ROLES */
-            var adminRole = new IdentityRole { Name = "Admin" };
-            var roleResult = roleManager.CreateAsync(adminRole).Result;
-
-            /* ADDING USERS */
-            var aUser = new ApplicationUser()
+            if (!roleManager.Roles.Any())
             {
-                UserName = "test@user.com",
-                Email = "test@user.com",
-                CustomerName = "Random Smurf",
-                Street = "Smurfgatan",
-                PostalCode = 07617,
-                City = "Smurftown"
-            };
+                var adminRole = new IdentityRole { Name = "Admin" };
+                roleManager.CreateAsync(adminRole).Wait();
 
-            var r = userManager.CreateAsync(aUser, "Abc12#Test");
+                if (!userManager.Users.Any())
+                {
+                    /* ADDING USERS */
+                    var aUser = new ApplicationUser()
+                    {
+                        UserName = "test@user.com",
+                        Email = "test@user.com",
+                        CustomerName = "Random Smurf",
+                        Street = "Smurfgatan",
+                        PostalCode = 07617,
+                        City = "Smurftown"
+                    };
 
-            var adminUser = new ApplicationUser()
-            {
-                UserName = "test2@user.com",
-                Email = "test2@user.com",
-                CustomerName = "Random Smurf 2",
-                Street = "Smurfgatan 2",
-                PostalCode = 07627,
-                City = "Smurftown 2"
-            };
+                    userManager.CreateAsync(aUser, "Abc12#Test").Wait();
 
-            var r2 = userManager.CreateAsync(adminUser, "Abc12#Test");
+                    var adminUser = new ApplicationUser()
+                    {
+                        UserName = "test2@user.com",
+                        Email = "test2@user.com",
+                        CustomerName = "Random Smurf 2",
+                        Street = "Smurfgatan 2",
+                        PostalCode = 07627,
+                        City = "Smurftown 2"
+                    };
 
-            userManager.AddToRoleAsync(adminUser, adminRole.Name);
+                    userManager.CreateAsync(adminUser, "Abc12#Test").Wait();
+
+                    userManager.AddToRoleAsync(adminUser, adminRole.Name).Wait();
+                }
+
+                context.SaveChanges();
+            }
 
             /* CATEGORIES */
-
-            var categories = new List<Category>
+            if (!context.Categories.Any())
+            {
+                context.AddRange(new List<Category>
                 {
                     new Category {Name="Pizza"},
                     new Category {Name="Sallad"},
                     new Category {Name="Övrigt"}
-                };
-
-            if (!context.Categories.Any())
-            {
-                context.AddRange(categories);
+                });
                 context.SaveChanges();
             }
 
