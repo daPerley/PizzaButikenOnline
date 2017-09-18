@@ -37,9 +37,6 @@ namespace PizzaButikenOnline
                 services.AddDbContext<ApplicationDbContext>(options =>
                     options.UseInMemoryDatabase("DefaultConnection"));
 
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseInMemoryDatabase(("DefaultConnection")));
-
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
@@ -52,23 +49,25 @@ namespace PizzaButikenOnline
             services.AddTransient<IRepository<Category>, CategoryRepository>();
             services.AddTransient<UserManager<ApplicationUser>>();
             services.AddScoped(SessionCart.GetCart);
-            services.AddMemoryCache();
-            services.AddSession();
+
 
             services.AddMvc();
+
+            services.AddMemoryCache();
+            services.AddSession();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, UserManager<ApplicationUser> userManager, ApplicationDbContext context, RoleManager<IdentityRole> roleManager)
+        public void Configure(IApplicationBuilder app, UserManager<ApplicationUser> userManager, ApplicationDbContext context, RoleManager<IdentityRole> roleManager)
         {
-            if (env.IsProduction())
+            if (_environment.IsProduction())
                 _loggerFactory.AddAzureWebAppDiagnostics(
                  new AzureAppServicesDiagnosticsSettings
                  {
                      OutputTemplate = "{Timestamp:yyyy-MM-dd HH:mm:ss zzz} [{Level}] {RequestId}-{SourceContext}: {Message}{NewLine}{Exception}"
                  });
 
-            if (env.IsDevelopment())
+            if (_environment.IsDevelopment() || _environment.IsStaging())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseBrowserLink();

@@ -2,12 +2,19 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace PizzaButikenOnline.Test
 {
+
     [TestClass]
-    public class UnitTest1
+    public class CartTest
     {
-        [TestMethod]
-        public void TestMethod1()
+
+        public CartTest()
         {
+        }
+
+        [TestMethod]
+        public void AddDish_DishViewModelIsNull_ShouldReturnFalse()
+        {
+
         }
     }
 }

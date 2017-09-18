@@ -2,6 +2,7 @@
 using PizzaButikenOnline.Data;
 using PizzaButikenOnline.Models;
 using PizzaButikenOnline.Models.CartViewModels;
+using PizzaButikenOnline.Repositories;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -11,11 +12,13 @@ namespace PizzaButikenOnline.Controllers
     {
         private readonly ApplicationDbContext _context;
         private Cart _cart;
+        private IRepository<Ingredient> _ingredientRepository;
 
-        public CartController(ApplicationDbContext context, Cart cart)
+        public CartController(ApplicationDbContext context, Cart cart, IRepository<Ingredient> ingredientRepository)
         {
             _context = context;
             _cart = cart;
+            _ingredientRepository = ingredientRepository;
         }
 
         public IActionResult Index()
@@ -23,7 +26,7 @@ namespace PizzaButikenOnline.Controllers
             return View(new CartIndexViewModel
             {
                 Cart = _cart,
-                Ingredients = _context.Ingredients.ToList()
+                Ingredients = _ingredientRepository.List().ToList()
             });
         }
 
@@ -68,7 +71,7 @@ namespace PizzaButikenOnline.Controllers
             {
                 if (!line.BaseIngredientIds.Contains(id))
                 {
-                    var ingredient = _context.Ingredients.FirstOrDefault(i => i.Id == id);
+                    var ingredient = _ingredientRepository.Get(id);
 
                     extraPrice += ingredient.Price;
                 }

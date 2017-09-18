@@ -9,11 +9,15 @@ namespace PizzaButikenOnline.Services
     public class DishService : IDishService
     {
         private IRepository<Dish> _dishRepository;
-        private ApplicationDbContext _context;
+        private IRepository<Category> _categoryRepositry;
+        private IRepository<Ingredient> _ingredientRepository;
+        private readonly ApplicationDbContext _context;
 
-        public DishService(IRepository<Dish> dishRepository, ApplicationDbContext context)
+        public DishService(IRepository<Dish> dishRepository, IRepository<Category> categoryRepositry, IRepository<Ingredient> ingredientRepository, ApplicationDbContext context)
         {
             _dishRepository = dishRepository;
+            _categoryRepositry = categoryRepositry;
+            _ingredientRepository = ingredientRepository;
             _context = context;
         }
 
@@ -26,7 +30,7 @@ namespace PizzaButikenOnline.Services
                     Name = viewModel.Name,
                     Price = viewModel.Price,
                     Description = viewModel.Description,
-                    CategoryId = _context.Categories.First(c => c.Id == viewModel.CategoryId).Id
+                    CategoryId = _categoryRepositry.Get(viewModel.CategoryId).Id
                 };
 
                 _dishRepository.Create(dish);
@@ -41,7 +45,7 @@ namespace PizzaButikenOnline.Services
                     };
 
                     _context.IngredientDishes.Add(id);
-                    _context.SaveChanges();
+                    _ingredientRepository.SaveChanges();
                 }
             }
             catch (System.Exception)
