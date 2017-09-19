@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using PizzaButikenOnline.Models.CheckOutViewModel;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace PizzaButikenOnline.Models
 {
     public class Cart
     {
+        private CheckoutViewModel PendingOrder = new CheckoutViewModel();
         private List<CartLine> lineCollection = new List<CartLine>();
 
         public virtual void AddItem(Dish dish, ICollection<int> ingredientIds)
@@ -49,6 +51,13 @@ namespace PizzaButikenOnline.Models
         public virtual void Clear() => lineCollection.Clear();
 
         public virtual IEnumerable<CartLine> Lines => lineCollection;
+
+        public virtual void AddPendingOrder(CheckoutViewModel checkoutViewModel)
+        {
+            PendingOrder = checkoutViewModel;
+        }
+
+        public virtual CheckoutViewModel GetPendingOrder => PendingOrder;
     }
 
     public class CartLine

@@ -76,50 +76,52 @@ namespace PizzaButikenOnline.Controllers
                     }
                 };
                 return View(nameof(Checkout), checkoutViewModel);
+            } else if(checkoutViewModel.PaymentId == 2)
+            {
+                _cart.AddPendingOrder(checkoutViewModel);
+
+                return RedirectToAction(nameof(PayWithCard));
             }
 
-            var order = new Order
-            {
-                OrderDishes = new List<OrderDish>(),
-                DateTime = DateTime.Now
-            };
+            var order = new Order();
 
-            if (User.Identity.IsAuthenticated && _userManager.GetUserId(User) != null)
+            try
             {
-                order.UserId = _userManager.GetUserId(User);
+                order = PlaceOrder(checkoutViewModel);
             }
-            else
+            catch (Exception)
             {
-                order.AnonymousAddress = new AnonymousAddress
+                checkoutViewModel.PaymentOptions = new List<PaymentViewModel>
                 {
-                    CustomerName = checkoutViewModel.CustomerName,
-                    Street = checkoutViewModel.Street,
-                    PostalCode = checkoutViewModel.PostalCode,
-                    City = checkoutViewModel.City
+                    new PaymentViewModel{
+                        Id =1,
+                        PaymentMethod ="Kontant"
+                    },
+                    new PaymentViewModel{
+                        Id =2,
+                        PaymentMethod ="Kort"
+                    }
                 };
+                return View(nameof(Checkout), checkoutViewModel);
             }
 
-            if (_cart.Lines != null)
+            return RedirectToAction(nameof(CheckoutCompleted), order);
+        }
+
+        public IActionResult PayWithCard()
+        {
+            return View(new PayWithCardViewModel());
+        }
+
+        [HttpPost]
+        public IActionResult PayWithCard(PayWithCardViewModel payWithCardViewModel)
+        {
+            if (!ModelState.IsValid)
             {
-                foreach (var line in _cart.Lines)
-                {
-                    var orderDish = new OrderDish
-                    {
-                        DishId = line.Dish.Id,
-                        OrderId = order.Id,
-                        EditedIngredients = line.IngredientIds.Select(i => new IngredientOrderDish
-                        {
-                            IngredientId = i,
-                            OrderDishId = line.Dish.Id
-                        }).ToList()
-                    };
-
-                    order.OrderDishes.Add(orderDish);
-                }
+                return View(nameof(PayWithCard), payWithCardViewModel);
             }
 
-            _context.Orders.Add(order);
-            _context.SaveChanges();
+            var order = PlaceOrder(_cart.GetPendingOrder);
 
             return RedirectToAction(nameof(CheckoutCompleted), order);
         }
@@ -129,6 +131,54 @@ namespace PizzaButikenOnline.Controllers
             _cart.Clear();
 
             return View(order);
+        }
+
+        public Order PlaceOrder(CheckoutViewModel checkoutViewModel)
+        {
+            var order = new Order
+                {
+                    OrderDishes = new List<OrderDish>(),
+                    DateTime = DateTime.Now
+                };
+
+                if (User.Identity.IsAuthenticated && _userManager.GetUserId(User) != null)
+                {
+                    order.UserId = _userManager.GetUserId(User);
+                }
+                else
+                {
+                    order.AnonymousAddress = new AnonymousAddress
+                    {
+                        CustomerName = checkoutViewModel.CustomerName,
+                        Street = checkoutViewModel.Street,
+                        PostalCode = checkoutViewModel.PostalCode,
+                        City = checkoutViewModel.City
+                    };
+                }
+
+                if (_cart.Lines != null)
+                {
+                    foreach (var line in _cart.Lines)
+                    {
+                        var orderDish = new OrderDish
+                        {
+                            DishId = line.Dish.Id,
+                            OrderId = order.Id,
+                            EditedIngredients = line.IngredientIds.Select(i => new IngredientOrderDish
+                            {
+                                IngredientId = i,
+                                OrderDishId = line.Dish.Id
+                            }).ToList()
+                        };
+
+                        order.OrderDishes.Add(orderDish);
+                    }
+                }
+
+                _context.Orders.Add(order);
+                _context.SaveChanges();
+
+            return order;
         }
     }
 }

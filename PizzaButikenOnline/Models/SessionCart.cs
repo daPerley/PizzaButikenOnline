@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using PizzaButikenOnline.Extensions;
+using PizzaButikenOnline.Models.CheckOutViewModel;
 using System;
 using System.Collections.Generic;
 
@@ -42,6 +43,12 @@ namespace PizzaButikenOnline.Models
         {
             base.Clear();
             Session.Remove("Cart");
+        }
+
+        public override void AddPendingOrder(CheckoutViewModel checkoutViewModel)
+        {
+            base.AddPendingOrder(checkoutViewModel);
+            Session.SetJson("Cart", this);
         }
     }
 }
